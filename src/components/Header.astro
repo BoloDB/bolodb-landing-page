@@ -1,4 +1,5 @@
 ---
+const APP_URL = 'https://app.bolodb.dev';
 const navItems = [
   { label: 'Demo', href: '/#demo' },
   { label: 'How it works', href: '/#how' },
@@ -40,9 +41,16 @@ const navItems = [
     <button id="bd-theme-toggle" class="bd-nav__theme" aria-label="Toggle theme" type="button">
       <span id="bd-theme-icon" class="bd-nav__theme-icon">☀</span>
     </button>
-    <a href="#" class="bd-nav__login">Log in</a>
-    <a href="#" class="bd-nav__cta">Start free</a>
-    <button id="bd-mobile-toggle" class="bd-nav__mobile-toggle" aria-label="Toggle menu" type="button">
+    <a href={APP_URL} class="bd-nav__login">Log in</a>
+    <a href={APP_URL} class="bd-nav__cta">Start free</a>
+    <button
+      id="bd-mobile-toggle"
+      class="bd-nav__mobile-toggle"
+      aria-label="Toggle menu"
+      aria-controls="bd-mobile-menu"
+      aria-expanded="false"
+      type="button"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="4" x2="20" y1="12" y2="12"></line>
         <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -50,7 +58,7 @@ const navItems = [
       </svg>
     </button>
   </div>
-  <div id="bd-mobile-menu" class="bd-nav__mobile-menu">
+  <div id="bd-mobile-menu" class="bd-nav__mobile-menu" aria-hidden="true" inert>
     <div class="bd-nav__mobile-menu-inner">
       {
         navItems.map((item) => (
@@ -59,7 +67,7 @@ const navItems = [
           </a>
         ))
       }
-      <a href="#" class="bd-nav__cta bd-nav__cta--block">Start free</a>
+      <a href={APP_URL} class="bd-nav__cta bd-nav__cta--block">Start free</a>
     </div>
   </div>
 </nav>
@@ -255,7 +263,10 @@ const navItems = [
   const toggle = document.getElementById('bd-mobile-toggle');
   const menu = document.getElementById('bd-mobile-menu');
   toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('is-open');
+    const open = menu?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu?.setAttribute('aria-hidden', String(!open));
+    menu?.toggleAttribute('inert', !open);
   });
 
   const themeToggle = document.getElementById('bd-theme-toggle');

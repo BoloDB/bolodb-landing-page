@@ -1,4 +1,5 @@
 ---
+const APP_URL = 'https://app.bolodb.dev';
 ---
 
 <section class="bd-hero" data-screen-label="Hero">
@@ -22,7 +23,7 @@
     </div>
   </div>
   <div class="bd-hero__actions">
-    <a href="#" class="bd-hero__primary">Start for free</a>
+    <a href={APP_URL} class="bd-hero__primary">Start for free</a>
     <a href="#demo" class="bd-hero__secondary">Watch it work ↓</a>
   </div>
   <a href="#demo" class="bd-hero__scroll-cue" aria-label="Scroll to demo">
@@ -48,7 +49,7 @@
     font-size: 12.5px;
     letter-spacing: 0.22em;
     color: var(--accent);
-    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
   .bd-hero__title {
     margin: 0;
@@ -61,10 +62,10 @@
     overflow: hidden;
   }
   .bd-hero__line--1 {
-    animation: maskUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s both;
+    animation: mask-up 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s both;
   }
   .bd-hero__line--2 {
-    animation: maskUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s both;
+    animation: mask-up 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s both;
   }
   .bd-hero__line span {
     display: block;
@@ -88,11 +89,11 @@
     color: var(--muted);
     max-width: 560px;
     text-wrap: balance;
-    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.6s both;
+    animation: rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.6s both;
   }
   .bd-hero__search-wrap {
     width: min(620px, 100%);
-    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.75s both;
+    animation: rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.75s both;
   }
   .bd-hero__search {
     display: flex;
@@ -132,7 +133,7 @@
     gap: 14px;
     flex-wrap: wrap;
     justify-content: center;
-    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.9s both;
+    animation: rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.9s both;
   }
   .bd-hero__primary {
     display: inline-flex;
@@ -194,7 +195,7 @@
     border-radius: 99px;
     padding-top: 8px;
     opacity: 0;
-    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.1s both;
+    animation: rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.1s both;
     transition: border-color 0.2s;
   }
   .bd-hero__scroll-cue:hover {

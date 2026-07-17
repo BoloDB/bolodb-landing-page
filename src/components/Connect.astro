@@ -15,13 +15,13 @@ const dbs = [
     <h2 class="bd-h2">Any SQL database. One connection string.</h2>
   </div>
   <div class="bd-connect__panel" data-reveal="2">
-    <div class="bd-connect__tabs" role="tablist">
+    <div class="bd-connect__tabs" role="group" aria-label="Choose your database">
       {
         dbs.map((db, i) => (
           <button
             class="bd-connect__tab"
             data-db-index={i}
-            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-pressed={i === 0 ? 'true' : 'false'}
             type="button"
           >
             {db.name}
@@ -85,7 +85,7 @@ const dbs = [
   .bd-connect__tab:active {
     transform: scale(0.96);
   }
-  .bd-connect__tab[aria-selected='true'] {
+  .bd-connect__tab[aria-pressed='true'] {
     background: var(--surface-3);
     color: var(--ink);
   }
@@ -125,8 +125,8 @@ const dbs = [
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       const index = Number(tab.dataset.dbIndex);
-      tabs.forEach((t) => t.setAttribute('aria-selected', 'false'));
-      tab.setAttribute('aria-selected', 'true');
+      tabs.forEach((t) => t.setAttribute('aria-pressed', 'false'));
+      tab.setAttribute('aria-pressed', 'true');
       if (stringEl) {
         stringEl.style.opacity = '0';
         setTimeout(() => {

@@ -30,7 +30,7 @@ const trustLevels = [
   <div class="bd-trust__grid">
     <div class="bd-trust__flip-wrap" data-reveal="2">
       <div id="bd-flip-card" class="bd-trust__flip-card">
-        <div class="bd-trust__flip-face">
+        <div id="bd-flip-face-front" class="bd-trust__flip-face" aria-hidden="false">
           <span class="bd-trust__flip-label">THE ANSWER YOU SEE</span>
           <div class="bd-trust__flip-answer">
             Revenue this month is <strong class="bd-trust__flip-strong">$284,120</strong> — up 12% on last month.
@@ -43,14 +43,20 @@ const trustLevels = [
             <button id="bd-flip-btn-1" class="bd-trust__flip-btn" type="button">Show me the SQL ⟲</button>
           </div>
         </div>
-        <div class="bd-trust__flip-face bd-trust__flip-face--back">
+        <div id="bd-flip-face-back" class="bd-trust__flip-face bd-trust__flip-face--back" aria-hidden="true">
           <span class="bd-trust__flip-label bd-trust__flip-label--brand">THE SQL UNDERNEATH — ALWAYS ONE TAP AWAY</span>
-          <pre class="bd-trust__flip-sql">SELECT SUM(total) AS revenue
+          <pre class="bd-trust__flip-sql">SELECT
+  SUM(total) FILTER (
+    WHERE created_at &gt;= date_trunc('month', now())
+  ) AS this_month,
+  SUM(total) FILTER (
+    WHERE created_at &gt;= date_trunc('month', now()) - interval '1 month'
+      AND created_at &lt;  date_trunc('month', now())
+  ) AS last_month
 FROM orders
-WHERE status = 'completed'
-  AND created_at &gt;= date_trunc('month', now());</pre>
+WHERE status = 'completed';</pre>
           <div class="bd-trust__flip-footer">
-            <button id="bd-flip-btn-2" class="bd-trust__flip-btn bd-trust__flip-btn--accent" type="button">
+            <button id="bd-flip-btn-2" class="bd-trust__flip-btn bd-trust__flip-btn--accent" type="button" tabindex="-1">
               Back to the answer ⟲
             </button>
           </div>
@@ -255,7 +261,7 @@ WHERE status = 'completed'
     height: auto;
   }
   .bd-trust__flow-line {
-    animation: dashFlow 1.2s linear infinite;
+    animation: dash-flow 1.2s linear infinite;
   }
   .bd-trust__reaches-body {
     font-size: 13.5px;
@@ -364,14 +370,36 @@ WHERE status = 'completed'
     .bd-trust__level {
       flex: 1 1 45%;
     }
+    .bd-trust__flip-wrap,
+    .bd-trust__flip-card {
+      min-height: 460px;
+    }
+    .bd-trust__flip-face {
+      padding: 24px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .bd-trust__flip-wrap,
+    .bd-trust__flip-card {
+      min-height: 520px;
+    }
   }
 </style>
 
 <script>
   const card = document.getElementById('bd-flip-card');
+  const front = document.getElementById('bd-flip-face-front');
+  const back = document.getElementById('bd-flip-face-back');
   const btn1 = document.getElementById('bd-flip-btn-1');
   const btn2 = document.getElementById('bd-flip-btn-2');
-  const toggleFlip = () => card?.classList.toggle('is-flipped');
+  const toggleFlip = () => {
+    const flipped = card?.classList.toggle('is-flipped') ?? false;
+    front?.setAttribute('aria-hidden', String(flipped));
+    back?.setAttribute('aria-hidden', String(!flipped));
+    btn1?.setAttribute('tabindex', flipped ? '-1' : '0');
+    btn2?.setAttribute('tabindex', flipped ? '0' : '-1');
+  };
   btn1?.addEventListener('click', toggleFlip);
   btn2?.addEventListener('click', toggleFlip);
 </script>

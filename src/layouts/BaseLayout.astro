@@ -167,6 +167,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         };
         if (reduced) {
           draw(6000);
+          const themeObserver = new MutationObserver(() => draw(6000));
+          themeObserver.observe(document.documentElement, { attributeFilter: ['data-theme'] });
         } else {
           const loop = (now: number) => {
             if (!document.hidden) draw(now);
