@@ -124,12 +124,6 @@
   .bd-demo__skip:active {
     transform: scale(0.94);
   }
-  .bd-demo__confirm-badge {
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  .bd-demo__confirm-badge:hover {
-    transform: scale(1.04);
-  }
 
   @media (max-width: 480px) {
     .bd-demo__bar {
@@ -302,6 +296,10 @@
     border: 1px solid #2f8f66;
     color: var(--ok-ink);
     background: rgba(27, 158, 107, 0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .bd-demo__confirm-badge:hover {
+    transform: scale(1.04);
   }
   .bd-demo__footnote {
     margin: 18px auto 0;

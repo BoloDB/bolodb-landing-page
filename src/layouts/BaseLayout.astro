@@ -116,7 +116,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           vy: (Math.random() - 0.5) * 0.22,
           r: Math.random() * 1.4 + 0.4,
         }));
-        let animId = 0;
         const draw = (t: number) => {
           if (!ctx) return;
           ctx.clearRect(0, 0, w, h);
@@ -172,9 +171,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         } else {
           const loop = (now: number) => {
             if (!document.hidden) draw(now);
-            animId = requestAnimationFrame(loop);
+            requestAnimationFrame(loop);
           };
-          animId = requestAnimationFrame(loop);
+          requestAnimationFrame(loop);
         }
       }
 
