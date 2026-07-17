@@ -1,76 +1,313 @@
 ---
+const APP_URL = 'https://app.bolodb.dev';
 const navItems = [
-  { label: 'Product', href: '#features' },
+  { label: 'Demo', href: '/#demo' },
+  { label: 'How it works', href: '/#how' },
+  { label: 'Trust', href: '/#trust' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Docs', href: 'https://docs.bolodb.dev' },
-  { label: 'Status', href: 'https://status.bolodb.dev' },
+  { label: 'Docs', href: 'https://github.com/BoloDB/bolodb/blob/master/docs/README.md' },
 ];
-
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
-  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-    <a href="/" class="flex items-center gap-2 font-bold text-xl tracking-tight">
-      <span class="text-primary">Bolo</span><span>DB</span>
+<nav class="bd-nav" data-screen-label="Nav">
+  <div class="bd-nav__brand">
+    <a href="/" class="bd-nav__logo">
+      Bolo<span class="bd-nav__logo-accent">DB</span>
     </a>
-    <nav class="hidden md:flex items-center gap-8">
-      {navItems.map((item) => (
+    <svg width="26" height="26" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+      <path
+        d="M 52 44 Q 52 30 66 30 L 190 30 Q 204 30 204 44 L 204 138 Q 204 152 190 152 L 116 152 L 88 176 L 92 152 L 66 152 Q 52 152 52 138 Z"
+        stroke="var(--brand)"
+        stroke-width="6"
+        fill="none"></path>
+      <g stroke="var(--brand)" stroke-width="6" stroke-linecap="round" fill="none">
+        <ellipse cx="128" cy="66" rx="34" ry="11"></ellipse>
+        <path d="M 94 66 L 94 108 Q 94 119 128 119 Q 162 119 162 108 L 162 66"></path>
+        <path d="M 94 87 Q 94 98 128 98 Q 162 98 162 87"></path>
+      </g>
+      <circle cx="182" cy="46" r="3.5" fill="var(--brand)"></circle>
+    </svg>
+  </div>
+  <div class="bd-nav__links">
+    {
+      navItems.map((item) => (
         <a
           href={item.href}
-          class:list={[
-            'text-sm font-medium transition-colors hover:text-foreground',
-            currentPath === item.href ? 'text-foreground' : 'text-muted-foreground',
-          ]}
+          class="bd-nav__link"
+          class:list={{ 'is-active': currentPath === item.href }}
+          aria-current={currentPath === item.href ? 'page' : undefined}
         >
           {item.label}
         </a>
-      ))}
-    </nav>
-    <div class="flex items-center gap-3">
-      <a
-        href="https://app.bolodb.dev"
-        class="hidden sm:inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-      >
-        Open App
-      </a>
-      <button
-        id="mobile-menu-toggle"
-        class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground"
-        aria-label="Toggle menu"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-          <line x1="4" x2="20" y1="12" y2="12"></line>
-          <line x1="4" x2="20" y1="6" y2="6"></line>
-          <line x1="4" x2="20" y1="18" y2="18"></line>
-        </svg>
-      </button>
+      ))
+    }
+  </div>
+  <div class="bd-nav__actions">
+    <button id="bd-theme-toggle" class="bd-nav__theme" aria-label="Toggle theme" type="button">
+      <span id="bd-theme-icon" class="bd-nav__theme-icon">☀</span>
+    </button>
+    <a href={APP_URL} class="bd-nav__login">Log in</a>
+    <a href={APP_URL} class="bd-nav__cta">Start free</a>
+    <button
+      id="bd-mobile-toggle"
+      class="bd-nav__mobile-toggle"
+      aria-label="Toggle menu"
+      aria-controls="bd-mobile-menu"
+      aria-expanded="false"
+      type="button"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="6" y2="6"></line>
+        <line x1="4" x2="20" y1="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  <div id="bd-mobile-menu" class="bd-nav__mobile-menu" aria-hidden="true" inert>
+    <div class="bd-nav__mobile-menu-inner">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="bd-nav__link"
+            class:list={{ 'is-active': currentPath === item.href }}
+            aria-current={currentPath === item.href ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={APP_URL} class="bd-nav__cta bd-nav__cta--block">Start free</a>
     </div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden border-t">
-    <nav class="flex flex-col px-6 py-4 gap-3">
-      {navItems.map((item) => (
-        <a
-          href={item.href}
-          class="text-sm font-medium text-muted-foreground hover:text-foreground"
-        >
-          {item.label}
-        </a>
-      ))}
-      <a
-        href="https://app.bolodb.dev"
-        class="mt-2 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-      >
-        Open App
-      </a>
-    </nav>
-  </div>
-</header>
+</nav>
+
+<style>
+  .bd-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .bd-nav.is-scrolled {
+    border-bottom-color: var(--border);
+    box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.5);
+  }
+  .bd-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bd-nav__logo {
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .bd-nav__logo:hover {
+    color: var(--ink);
+  }
+  .bd-nav__logo-accent {
+    color: var(--brand);
+  }
+  .bd-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .bd-nav__link {
+    color: var(--muted);
+    padding: 8px 14px;
+    border-radius: 99px;
+    transition: all 0.15s;
+  }
+  .bd-nav__link:hover {
+    color: var(--ink);
+    background: var(--surface-3);
+  }
+  .bd-nav__link.is-active {
+    color: var(--ink);
+    background: var(--surface-3);
+  }
+  .bd-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-self: end;
+  }
+  .bd-nav__theme {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    border-radius: 99px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .bd-nav__theme:hover {
+    color: var(--ink);
+    background: var(--surface-3);
+  }
+  .bd-nav__theme:active {
+    transform: scale(0.9);
+  }
+  .bd-nav__theme-icon {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .bd-nav__theme-icon.is-spinning {
+    transform: rotate(180deg);
+  }
+  .bd-nav__login {
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .bd-nav__login:hover {
+    color: var(--ink);
+  }
+  .bd-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    background: var(--contrast-bg);
+    color: var(--contrast-ink);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 99px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition: all 0.18s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .bd-nav__cta:hover {
+    background: var(--brand);
+    color: var(--on-brand);
+    transform: translateY(-1px);
+  }
+  .bd-nav__cta:active {
+    transform: translateY(0) scale(0.96);
+  }
+  .bd-nav__mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 6px;
+    cursor: pointer;
+  }
+  .bd-nav__mobile-menu {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.25s ease;
+  }
+  .bd-nav__mobile-menu.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .bd-nav__mobile-menu-inner {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 16px;
+  }
+  .bd-nav__mobile-menu .bd-nav__cta--block {
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 860px) {
+    .bd-nav {
+      grid-template-columns: 1fr auto;
+      padding: 14px 20px;
+    }
+    .bd-nav__links {
+      display: none;
+    }
+    .bd-nav__login {
+      display: none;
+    }
+    .bd-nav__mobile-toggle {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .bd-nav {
+      padding: 12px 14px;
+    }
+    .bd-nav__actions {
+      gap: 8px;
+    }
+    .bd-nav__cta {
+      padding: 9px 14px;
+      font-size: 13px;
+    }
+    .bd-nav__theme {
+      width: 30px;
+      height: 30px;
+    }
+  }
+</style>
 
 <script>
-  const toggle = document.getElementById('mobile-menu-toggle');
-  const menu = document.getElementById('mobile-menu');
+  const toggle = document.getElementById('bd-mobile-toggle');
+  const menu = document.getElementById('bd-mobile-menu');
   toggle?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+    const open = menu?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu?.setAttribute('aria-hidden', String(!open));
+    menu?.toggleAttribute('inert', !open);
   });
+
+  const themeToggle = document.getElementById('bd-theme-toggle');
+  const themeIcon = document.getElementById('bd-theme-icon');
+  const syncIcon = (theme: string | null) => {
+    if (themeIcon) themeIcon.textContent = theme === 'light' ? '☾' : '☀';
+  };
+  syncIcon(document.documentElement.getAttribute('data-theme'));
+  themeToggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('bolodb-theme', next);
+    } catch (e) {
+      // ignore storage errors
+    }
+    themeIcon?.classList.add('is-spinning');
+    syncIcon(next);
+    setTimeout(() => themeIcon?.classList.remove('is-spinning'), 400);
+  });
+
+  const nav = document.querySelector('.bd-nav');
+  const updateNavShadow = () => {
+    nav?.classList.toggle('is-scrolled', window.scrollY > 8);
+  };
+  updateNavShadow();
+  window.addEventListener('scroll', updateNavShadow, { passive: true });
 </script>

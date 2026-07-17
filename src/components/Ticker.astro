@@ -1,0 +1,56 @@
+---
+const items = [
+  'READ-ONLY QUERIES',
+  'ROWS NEVER LEAVE YOUR DB',
+  'NO TELEMETRY',
+  'OPEN SOURCE · MIT',
+  'SELF-HOSTABLE',
+  'LEARNS FROM VERIFIED ANSWERS',
+];
+const doubled = [...items, ...items];
+---
+
+<div class="bd-ticker" aria-hidden="true">
+  <div class="bd-ticker__track">
+    {
+      doubled.map((t) => (
+        <span class="bd-ticker__item">
+          <span class="bd-ticker__check">✓</span>
+          {t}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .bd-ticker {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    background: var(--ticker-bg);
+  }
+  .bd-ticker__track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: marquee 36s linear infinite;
+  }
+  .bd-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  .bd-ticker__check {
+    color: #2f8f66;
+  }
+</style>

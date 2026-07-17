@@ -1,0 +1,497 @@
+---
+---
+
+<section id="demo" class="bd-demo" data-screen-label="Live demo">
+  <div class="bd-demo__head" data-reveal="1">
+    <span class="bd-eyebrow">01 — ASK</span>
+    <h2 class="bd-h2">A question becomes an answer. Watch it happen.</h2>
+  </div>
+
+  <div id="bd-demo-panel" class="bd-demo__panel" data-reveal="2">
+    <div class="bd-demo__bar">
+      <div class="bd-demo__dots"><span></span><span></span><span></span></div>
+      <span class="bd-demo__label">LIVE DEMO · SAMPLE STORE DATABASE</span>
+      <button id="bd-demo-skip" class="bd-demo__skip" type="button">Skip</button>
+    </div>
+    <div class="bd-demo__body">
+      <div class="bd-demo__bubble">
+        <span id="bd-demo-typed"></span><span id="bd-demo-caret" class="bd-demo__caret">|</span>
+      </div>
+
+      <div id="bd-demo-thinking" class="bd-demo__thinking" hidden>
+        <span class="bd-demo__spinner"></span>
+        Linking schema · writing SQL · validating…
+      </div>
+
+      <div id="bd-demo-sql-wrap" class="bd-demo__sql-wrap" hidden>
+        <div class="bd-demo__sql-head"><span>GENERATED SQL — VALIDATED ✓ READ-ONLY</span></div>
+        <pre id="bd-demo-sql" class="bd-demo__sql"></pre>
+      </div>
+
+      <div id="bd-demo-result" class="bd-demo__result" hidden>
+        <div id="bd-demo-restate" class="bd-demo__restate"></div>
+        <div class="bd-demo__confidence-row">
+          <span class="bd-demo__confidence"><span class="bd-demo__confidence-dot"></span>High confidence</span>
+          <span id="bd-demo-meta" class="bd-demo__meta"></span>
+        </div>
+        <table class="bd-demo__table">
+          <thead>
+            <tr>
+              <th id="bd-demo-col1" class="bd-demo__th-left"></th>
+              <th id="bd-demo-col2" class="bd-demo__th-right"></th>
+            </tr>
+          </thead>
+          <tbody id="bd-demo-rows"></tbody>
+        </table>
+        <div class="bd-demo__confirm">
+          <span class="bd-demo__confirm-label">Is this correct?</span>
+          <span class="bd-demo__confirm-badge">✓ Yes — teach BoloDB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="bd-demo__footnote">
+    Every answer ships with its SQL, a plain-English restatement, and a confidence level computed from real
+    signals — not the AI's self-esteem.
+  </p>
+</section>
+
+<style>
+  .bd-demo {
+    position: relative;
+    z-index: 2;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 130px 24px 110px;
+    scroll-margin-top: 84px;
+  }
+  .bd-demo__head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 52px;
+  }
+  .bd-demo__panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl), 0 0 80px -40px rgba(var(--glow-rgb), 0.25);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .bd-demo__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .bd-demo__dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bd-demo__dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-2);
+  }
+  .bd-demo__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--faint);
+  }
+  .bd-demo__skip {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 7px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .bd-demo__skip:hover {
+    color: var(--ink);
+    border-color: var(--border-2);
+  }
+  .bd-demo__skip:active {
+    transform: scale(0.94);
+  }
+
+  @media (max-width: 480px) {
+    .bd-demo__bar {
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+    .bd-demo__label {
+      order: 3;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+
+  .bd-demo__body {
+    padding: 28px 28px 32px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .bd-demo__bubble {
+    align-self: flex-end;
+    max-width: 80%;
+    padding: 13px 22px;
+    font-size: 15.5px;
+    line-height: 1.5;
+    border-radius: 18px 18px 4px 18px;
+    background: var(--surface-3);
+    color: var(--ink);
+  }
+  .bd-demo__caret {
+    color: var(--brand);
+    font-weight: 300;
+    animation: blink 1s step-end infinite;
+  }
+  .bd-demo__thinking {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 2px 0;
+  }
+  .bd-demo__spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--brand);
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+  }
+  .bd-demo__sql-wrap {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    animation: rise-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  .bd-demo__sql-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .bd-demo__sql {
+    margin: 0;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    background: var(--code-bg);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .bd-demo__result {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: rise-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  .bd-demo__restate {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+  }
+  .bd-demo__confidence-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .bd-demo__confidence {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 11px;
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ok-ink);
+    background: rgba(27, 158, 107, 0.15);
+    animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both;
+  }
+  .bd-demo__confidence-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1b9e6b;
+    box-shadow: 0 0 0 3px rgba(27, 158, 107, 0.18);
+  }
+  .bd-demo__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .bd-demo__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .bd-demo__th-left,
+  .bd-demo__th-right {
+    padding: 10px 14px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .bd-demo__th-left {
+    text-align: left;
+  }
+  .bd-demo__th-right {
+    text-align: right;
+  }
+  .bd-demo__table td {
+    padding: 11px 14px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+  }
+  .bd-demo__table td.bd-demo__td-right {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .bd-demo__table tr {
+    animation: row-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  .bd-demo__confirm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 2px;
+  }
+  .bd-demo__confirm-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .bd-demo__confirm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 15px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #2f8f66;
+    color: var(--ok-ink);
+    background: rgba(27, 158, 107, 0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .bd-demo__confirm-badge:hover {
+    transform: scale(1.04);
+  }
+  .bd-demo__footnote {
+    margin: 18px auto 0;
+    font-size: 13px;
+    color: var(--faint);
+    text-align: center;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+</style>
+
+<script>
+  const QUESTIONS = [
+    {
+      q: 'Which 3 product categories bring in the most revenue?',
+      sql: 'SELECT category, SUM(total) AS revenue\nFROM order_items\nJOIN products USING (product_id)\nGROUP BY category\nORDER BY revenue DESC\nLIMIT 3;',
+      restate: 'Summed order-item totals grouped by product category, highest first.',
+      cols: ['Category', 'Revenue'],
+      meta: '3 rows · 38ms',
+      rows: [
+        { a: 'Electronics', b: '$412,890' },
+        { a: 'Home & Kitchen', b: '$268,340' },
+        { a: 'Outdoor', b: '$189,410' },
+      ],
+    },
+    {
+      q: 'How many orders were completed last month?',
+      sql: "SELECT COUNT(*) AS completed_orders\nFROM orders\nWHERE status = 'completed'\n  AND created_at >= date_trunc('month', now()) - interval '1 month'\n  AND created_at <  date_trunc('month', now());",
+      restate: "Counted orders with status 'completed' created in the previous calendar month.",
+      cols: ['Metric', 'Value'],
+      meta: '1 row · 22ms',
+      rows: [{ a: 'Completed orders', b: '1,284' }],
+    },
+    {
+      q: 'Who are our top 3 customers this quarter?',
+      sql: "SELECT c.name, SUM(o.total) AS spent\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.status = 'completed'\n  AND o.created_at >= date_trunc('quarter', now())\nGROUP BY c.id\nORDER BY spent DESC\nLIMIT 3;",
+      restate: 'Ranked customers by total completed-order spend since the start of this quarter.',
+      cols: ['Customer', 'Spent'],
+      meta: '3 rows · 41ms',
+      rows: [
+        { a: 'Acme Corp', b: '$124,500' },
+        { a: 'Globex Inc', b: '$98,200' },
+        { a: 'Initech', b: '$86,450' },
+      ],
+    },
+  ];
+
+  const panel = document.getElementById('bd-demo-panel');
+  const typedEl = document.getElementById('bd-demo-typed');
+  const caretEl = document.getElementById('bd-demo-caret');
+  const thinkingEl = document.getElementById('bd-demo-thinking');
+  const sqlWrapEl = document.getElementById('bd-demo-sql-wrap');
+  const sqlEl = document.getElementById('bd-demo-sql');
+  const resultEl = document.getElementById('bd-demo-result');
+  const restateEl = document.getElementById('bd-demo-restate');
+  const metaEl = document.getElementById('bd-demo-meta');
+  const col1El = document.getElementById('bd-demo-col1');
+  const col2El = document.getElementById('bd-demo-col2');
+  const rowsEl = document.getElementById('bd-demo-rows');
+  const skipBtn = document.getElementById('bd-demo-skip');
+
+  if (panel && typedEl && caretEl && thinkingEl && sqlWrapEl && sqlEl && resultEl && restateEl && metaEl && col1El && col2El && rowsEl && skipBtn) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let qi = 0;
+    let inView = false;
+    let running = false;
+    let skipped = false;
+    let timers: ReturnType<typeof setTimeout>[] = [];
+
+    const after = (ms: number, fn: () => void) => {
+      timers.push(setTimeout(fn, ms));
+    };
+    const clearTimers = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+    };
+
+    const renderRows = (q: (typeof QUESTIONS)[number], count: number) => {
+      if (count < rowsEl.children.length) {
+        rowsEl.innerHTML = '';
+      }
+      for (let i = rowsEl.children.length; i < count; i++) {
+        const r = q.rows[i];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.a}</td><td class="bd-demo__td-right">${r.b}</td>`;
+        rowsEl.appendChild(tr);
+      }
+    };
+
+    const showPhase = (phase: 'typing' | 'thinking' | 'sql' | 'result') => {
+      thinkingEl.hidden = phase !== 'thinking';
+      sqlWrapEl.hidden = !(phase === 'sql' || phase === 'result');
+      resultEl.hidden = phase !== 'result';
+    };
+
+    const renderQuestionMeta = (q: (typeof QUESTIONS)[number]) => {
+      sqlEl.textContent = q.sql;
+      restateEl.textContent = q.restate;
+      metaEl.textContent = q.meta;
+      col1El.textContent = q.cols[0];
+      col2El.textContent = q.cols[1];
+    };
+
+    const finishDemo = () => {
+      const q = QUESTIONS[qi];
+      clearTimers();
+      typedEl.textContent = q.q;
+      caretEl.style.display = 'none';
+      renderQuestionMeta(q);
+      renderRows(q, q.rows.length);
+      showPhase('result');
+    };
+
+    const playDemo = () => {
+      if (running || skipped || !inView) return;
+      running = true;
+      clearTimers();
+      const q = QUESTIONS[qi];
+      typedEl.textContent = '';
+      caretEl.style.display = '';
+      showPhase('typing');
+      renderQuestionMeta(q);
+      renderRows(q, 0);
+      let i = 0;
+      const type = () => {
+        if (!inView || skipped) {
+          running = false;
+          return;
+        }
+        i++;
+        typedEl.textContent = q.q.slice(0, i);
+        if (i < q.q.length) {
+          after(34, type);
+          return;
+        }
+        caretEl.style.display = 'none';
+        showPhase('thinking');
+        after(1400, () => showPhase('sql'));
+        after(2600, () => {
+          showPhase('result');
+          q.rows.forEach((_, k) => after(200 + k * 180, () => renderRows(q, k + 1)));
+        });
+        after(7200, () => {
+          running = false;
+          qi = (qi + 1) % QUESTIONS.length;
+          playDemo();
+        });
+      };
+      type();
+    };
+
+    if (reduced) {
+      finishDemo();
+      skipBtn.textContent = 'Next example';
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          inView = entries[0].isIntersecting;
+          if (inView && !running && !skipped) playDemo();
+          if (!inView) {
+            clearTimers();
+            running = false;
+          }
+        },
+        { threshold: 0.3 }
+      );
+      observer.observe(panel);
+    }
+
+    skipBtn.addEventListener('click', () => {
+      if (reduced) {
+        qi = (qi + 1) % QUESTIONS.length;
+        finishDemo();
+        return;
+      }
+      if (skipped) {
+        skipped = false;
+        qi = 0;
+        skipBtn.textContent = 'Skip';
+        running = false;
+        playDemo();
+      } else {
+        skipped = true;
+        skipBtn.textContent = 'Replay';
+        running = false;
+        finishDemo();
+      }
+    });
+  }
+</script>

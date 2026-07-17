@@ -1,53 +1,128 @@
 ---
-const footerLinks = {
-  Product: [
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Open App', href: 'https://app.bolodb.dev' },
-  ],
-  Resources: [
-    { label: 'Documentation', href: 'https://docs.bolodb.dev' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Status', href: 'https://status.bolodb.dev' },
-  ],
-  Company: [
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: 'mailto:hello@bolodb.dev' },
-  ],
-};
+const productLinks = [
+  { label: 'Demo', href: '/#demo' },
+  { label: 'How it works', href: '/#how' },
+  { label: 'Trust', href: '/#trust' },
+];
+const openSourceLinks = [
+  { label: 'GitHub', href: 'https://github.com/BoloDB/bolodb' },
+  { label: 'Docs', href: 'https://github.com/BoloDB/bolodb/blob/master/docs/README.md' },
+  { label: 'MIT License', href: 'https://github.com/BoloDB/bolodb/blob/master/LICENSE' },
+];
 ---
 
-<footer class="border-t bg-muted/50">
-  <div class="mx-auto max-w-6xl px-6 py-12">
-    <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
-      <div class="col-span-2 md:col-span-1">
-        <a href="/" class="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <span class="text-primary">Bolo</span><span>DB</span>
-        </a>
-        <p class="mt-3 text-sm text-muted-foreground">
-          A modern database for your applications.
-        </p>
-      </div>
-      {Object.entries(footerLinks).map(([category, links]) => (
-        <div>
-          <h3 class="mb-3 text-sm font-semibold">{category}</h3>
-          <ul class="space-y-2">
-            {links.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  class="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+<footer class="bd-footer" data-screen-label="Footer">
+  <div class="bd-footer__top">
+    <div class="bd-footer__brand">
+      <span class="bd-footer__logo">Bolo<span class="bd-footer__logo-accent">DB</span></span>
+      <span class="bd-footer__tagline">Ask your data. Trust the answer.</span>
+      <span class="bd-footer__meta">NO TELEMETRY · NO CLOUD SYNC · MIT</span>
     </div>
-    <div class="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-      &copy; {new Date().getFullYear()} BoloDB. All rights reserved.
+    <div class="bd-footer__cols">
+      <div class="bd-footer__col">
+        <span class="bd-footer__col-title">PRODUCT</span>
+        {productLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </div>
+      <div class="bd-footer__col">
+        <span class="bd-footer__col-title">OPEN SOURCE</span>
+        {openSourceLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </div>
     </div>
   </div>
+  <div class="bd-footer__copyright">&copy; {new Date().getFullYear()} BoloDB. All rights reserved.</div>
+  <div class="bd-footer__wordmark" aria-hidden="true">
+    <span>BoloDB</span>
+  </div>
 </footer>
+
+<style>
+  .bd-footer {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    padding: 64px 32px 0;
+  }
+  .bd-footer__top {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .bd-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bd-footer__logo {
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .bd-footer__logo-accent {
+    color: var(--brand);
+  }
+  .bd-footer__tagline {
+    font-size: 13px;
+    color: var(--faint);
+  }
+  .bd-footer__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+  }
+  .bd-footer__cols {
+    display: flex;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+  .bd-footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13.5px;
+  }
+  .bd-footer__col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--faint);
+  }
+  .bd-footer__col a {
+    color: var(--muted);
+  }
+  .bd-footer__col a:hover {
+    color: var(--ink);
+  }
+  .bd-footer__copyright {
+    max-width: 1060px;
+    margin: 32px auto 0;
+    font-size: 12px;
+    color: var(--faint);
+  }
+  .bd-footer__wordmark {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .bd-footer__wordmark span {
+    font-size: clamp(5rem, 17.5vw, 15rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.78;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--border-2);
+    transform: translateY(14%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.25) 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.25) 75%, transparent 100%);
+    display: inline-block;
+  }
+</style>

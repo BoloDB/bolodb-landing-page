@@ -1,0 +1,131 @@
+---
+const dbs = [
+  { name: 'PostgreSQL', str: 'postgresql://readonly_user:pass@host:5432/dbname' },
+  { name: 'MySQL', str: 'mysql+pymysql://readonly_user:pass@host:3306/dbname' },
+  {
+    name: 'SQL Server',
+    str: 'mssql+pyodbc://readonly_user:pass@server/db?driver=ODBC+Driver+17+for+SQL+Server',
+  },
+];
+---
+
+<section id="connect" class="bd-connect" data-screen-label="Connect">
+  <div class="bd-connect__head" data-reveal="1">
+    <span class="bd-eyebrow">04 — CONNECT</span>
+    <h2 class="bd-h2">Any SQL database. One connection string.</h2>
+  </div>
+  <div class="bd-connect__panel" data-reveal="2">
+    <div class="bd-connect__tabs" role="group" aria-label="Choose your database">
+      {
+        dbs.map((db, i) => (
+          <button
+            class="bd-connect__tab"
+            data-db-index={i}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            type="button"
+          >
+            {db.name}
+          </button>
+        ))
+      }
+    </div>
+    <div class="bd-connect__body">
+      <code id="bd-connect-string" class="bd-connect__string">{dbs[0].str}</code>
+      <span class="bd-connect__tip">
+        Tip: connect with a read-only database account — BoloDB enforces read-only itself as a second layer.
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bd-connect {
+    position: relative;
+    z-index: 2;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 110px 24px;
+    scroll-margin-top: 84px;
+  }
+  .bd-connect__head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .bd-connect__panel {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--card-2);
+  }
+  .bd-connect__tabs {
+    display: flex;
+    gap: 4px;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .bd-connect__tab {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .bd-connect__tab:hover {
+    color: var(--ink);
+  }
+  .bd-connect__tab:active {
+    transform: scale(0.96);
+  }
+  .bd-connect__tab[aria-pressed='true'] {
+    background: var(--surface-3);
+    color: var(--ink);
+  }
+  .bd-connect__body {
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bd-connect__string {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ok-ink);
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 4px 0;
+    transition: opacity 0.15s ease;
+  }
+  .bd-connect__tip {
+    font-size: 13px;
+    color: var(--faint);
+  }
+</style>
+
+<script define:vars={{ dbs }} is:inline>
+  const tabs = document.querySelectorAll('.bd-connect__tab');
+  const stringEl = document.getElementById('bd-connect-string');
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const index = Number(tab.dataset.dbIndex);
+      tabs.forEach((t) => t.setAttribute('aria-pressed', 'false'));
+      tab.setAttribute('aria-pressed', 'true');
+      if (stringEl) {
+        stringEl.style.opacity = '0';
+        setTimeout(() => {
+          stringEl.textContent = dbs[index].str;
+          stringEl.style.opacity = '1';
+        }, 120);
+      }
+    });
+  });
+</script>

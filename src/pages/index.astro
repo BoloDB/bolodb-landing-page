@@ -1,12 +1,23 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
-import Features from '@/components/Features.astro';
+import Ticker from '@/components/Ticker.astro';
+import Demo from '@/components/Demo.astro';
+import HowItWorks from '@/components/HowItWorks.astro';
+import Trust from '@/components/Trust.astro';
+import Connect from '@/components/Connect.astro';
 import CTA from '@/components/CTA.astro';
 ---
 
-<BaseLayout title="BoloDB - A Modern Database for Your Applications" description="BoloDB is a modern, developer-friendly database built for today's applications. Simple to start, powerful when you need it.">
+<BaseLayout
+  title="BoloDB — Text-to-SQL for Humans"
+  description="Ask your data plain-English questions and get verified SQL, a readable explanation, and an honest confidence level. Your rows never leave your database."
+>
   <Hero />
-  <Features />
+  <Ticker />
+  <Demo />
+  <HowItWorks />
+  <Trust />
+  <Connect />
   <CTA />
 </BaseLayout>
