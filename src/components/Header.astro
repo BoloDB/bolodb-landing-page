@@ -7,6 +7,7 @@ const navItems = [
   { label: 'Blog', href: '/blog' },
   { label: 'Docs', href: 'https://github.com/BoloDB/bolodb/blob/master/docs/README.md' },
 ];
+const currentPath = Astro.url.pathname;
 ---
 
 <nav class="bd-nav" data-screen-label="Nav">
@@ -31,7 +32,12 @@ const navItems = [
   <div class="bd-nav__links">
     {
       navItems.map((item) => (
-        <a href={item.href} class="bd-nav__link">
+        <a
+          href={item.href}
+          class="bd-nav__link"
+          class:list={{ 'is-active': currentPath === item.href }}
+          aria-current={currentPath === item.href ? 'page' : undefined}
+        >
           {item.label}
         </a>
       ))
@@ -62,7 +68,12 @@ const navItems = [
     <div class="bd-nav__mobile-menu-inner">
       {
         navItems.map((item) => (
-          <a href={item.href} class="bd-nav__link">
+          <a
+            href={item.href}
+            class="bd-nav__link"
+            class:list={{ 'is-active': currentPath === item.href }}
+            aria-current={currentPath === item.href ? 'page' : undefined}
+          >
             {item.label}
           </a>
         ))
@@ -125,6 +136,10 @@ const navItems = [
     transition: all 0.15s;
   }
   .bd-nav__link:hover {
+    color: var(--ink);
+    background: var(--surface-3);
+  }
+  .bd-nav__link.is-active {
     color: var(--ink);
     background: var(--surface-3);
   }
@@ -271,11 +286,10 @@ const navItems = [
 
   const themeToggle = document.getElementById('bd-theme-toggle');
   const themeIcon = document.getElementById('bd-theme-icon');
-  const syncIcon = () => {
-    const theme = document.documentElement.getAttribute('data-theme');
+  const syncIcon = (theme: string | null) => {
     if (themeIcon) themeIcon.textContent = theme === 'light' ? '☾' : '☀';
   };
-  syncIcon();
+  syncIcon(document.documentElement.getAttribute('data-theme'));
   themeToggle?.addEventListener('click', () => {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'light' ? 'dark' : 'light';
@@ -286,7 +300,7 @@ const navItems = [
       // ignore storage errors
     }
     themeIcon?.classList.add('is-spinning');
-    syncIcon();
+    syncIcon(next);
     setTimeout(() => themeIcon?.classList.remove('is-spinning'), 400);
   });
 

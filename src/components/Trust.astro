@@ -30,7 +30,7 @@ const trustLevels = [
   <div class="bd-trust__grid">
     <div class="bd-trust__flip-wrap" data-reveal="2">
       <div id="bd-flip-card" class="bd-trust__flip-card">
-        <div id="bd-flip-face-front" class="bd-trust__flip-face" aria-hidden="false">
+        <div id="bd-flip-face-front" class="bd-trust__flip-face">
           <span class="bd-trust__flip-label">THE ANSWER YOU SEE</span>
           <div class="bd-trust__flip-answer">
             Revenue this month is <strong class="bd-trust__flip-strong">$284,120</strong> — up 12% on last month.
@@ -43,7 +43,7 @@ const trustLevels = [
             <button id="bd-flip-btn-1" class="bd-trust__flip-btn" type="button">Show me the SQL ⟲</button>
           </div>
         </div>
-        <div id="bd-flip-face-back" class="bd-trust__flip-face bd-trust__flip-face--back" aria-hidden="true">
+        <div id="bd-flip-face-back" class="bd-trust__flip-face bd-trust__flip-face--back" inert>
           <span class="bd-trust__flip-label bd-trust__flip-label--brand">THE SQL UNDERNEATH — ALWAYS ONE TAP AWAY</span>
           <pre class="bd-trust__flip-sql">SELECT
   SUM(total) FILTER (
@@ -56,7 +56,7 @@ const trustLevels = [
 FROM orders
 WHERE status = 'completed';</pre>
           <div class="bd-trust__flip-footer">
-            <button id="bd-flip-btn-2" class="bd-trust__flip-btn bd-trust__flip-btn--accent" type="button" tabindex="-1">
+            <button id="bd-flip-btn-2" class="bd-trust__flip-btn bd-trust__flip-btn--accent" type="button">
               Back to the answer ⟲
             </button>
           </div>
@@ -395,10 +395,8 @@ WHERE status = 'completed';</pre>
   const btn2 = document.getElementById('bd-flip-btn-2');
   const toggleFlip = () => {
     const flipped = card?.classList.toggle('is-flipped') ?? false;
-    front?.setAttribute('aria-hidden', String(flipped));
-    back?.setAttribute('aria-hidden', String(!flipped));
-    btn1?.setAttribute('tabindex', flipped ? '-1' : '0');
-    btn2?.setAttribute('tabindex', flipped ? '0' : '-1');
+    front?.toggleAttribute('inert', flipped);
+    back?.toggleAttribute('inert', !flipped);
   };
   btn1?.addEventListener('click', toggleFlip);
   btn2?.addEventListener('click', toggleFlip);

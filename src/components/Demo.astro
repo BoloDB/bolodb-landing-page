@@ -15,7 +15,7 @@
     </div>
     <div class="bd-demo__body">
       <div class="bd-demo__bubble">
-        <span id="bd-demo-typed"></span><span id="bd-demo-caret" class="bd-hero__caret">|</span>
+        <span id="bd-demo-typed"></span><span id="bd-demo-caret" class="bd-demo__caret">|</span>
       </div>
 
       <div id="bd-demo-thinking" class="bd-demo__thinking" hidden>
@@ -154,6 +154,11 @@
     border-radius: 18px 18px 4px 18px;
     background: var(--surface-3);
     color: var(--ink);
+  }
+  .bd-demo__caret {
+    color: var(--brand);
+    font-weight: 300;
+    animation: blink 1s step-end infinite;
   }
   .bd-demo__thinking {
     display: flex;
@@ -309,23 +314,6 @@
     max-width: 520px;
     line-height: 1.6;
   }
-
-  :global(.bd-eyebrow) {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.22em;
-    color: var(--brand);
-  }
-  :global(.bd-h2) {
-    margin: 0;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    color: var(--ink);
-    max-width: 640px;
-    text-wrap: balance;
-  }
 </style>
 
 <script>
@@ -395,12 +383,15 @@
     };
 
     const renderRows = (q: (typeof QUESTIONS)[number], count: number) => {
-      rowsEl.innerHTML = '';
-      q.rows.slice(0, count).forEach((r) => {
+      if (count < rowsEl.children.length) {
+        rowsEl.innerHTML = '';
+      }
+      for (let i = rowsEl.children.length; i < count; i++) {
+        const r = q.rows[i];
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${r.a}</td><td class="bd-demo__td-right">${r.b}</td>`;
         rowsEl.appendChild(tr);
-      });
+      }
     };
 
     const showPhase = (phase: 'typing' | 'thinking' | 'sql' | 'result') => {
@@ -409,16 +400,20 @@
       resultEl.hidden = phase !== 'result';
     };
 
+    const renderQuestionMeta = (q: (typeof QUESTIONS)[number]) => {
+      sqlEl.textContent = q.sql;
+      restateEl.textContent = q.restate;
+      metaEl.textContent = q.meta;
+      col1El.textContent = q.cols[0];
+      col2El.textContent = q.cols[1];
+    };
+
     const finishDemo = () => {
       const q = QUESTIONS[qi];
       clearTimers();
       typedEl.textContent = q.q;
       caretEl.style.display = 'none';
-      restateEl.textContent = q.restate;
-      metaEl.textContent = q.meta;
-      col1El.textContent = q.cols[0];
-      col2El.textContent = q.cols[1];
-      sqlEl.textContent = q.sql;
+      renderQuestionMeta(q);
       renderRows(q, q.rows.length);
       showPhase('result');
     };
@@ -431,11 +426,7 @@
       typedEl.textContent = '';
       caretEl.style.display = '';
       showPhase('typing');
-      sqlEl.textContent = q.sql;
-      restateEl.textContent = q.restate;
-      metaEl.textContent = q.meta;
-      col1El.textContent = q.cols[0];
-      col2El.textContent = q.cols[1];
+      renderQuestionMeta(q);
       renderRows(q, 0);
       let i = 0;
       const type = () => {
@@ -467,6 +458,7 @@
 
     if (reduced) {
       finishDemo();
+      skipBtn.textContent = 'Next example';
     } else {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -483,16 +475,17 @@
     }
 
     skipBtn.addEventListener('click', () => {
+      if (reduced) {
+        qi = (qi + 1) % QUESTIONS.length;
+        finishDemo();
+        return;
+      }
       if (skipped) {
         skipped = false;
         qi = 0;
         skipBtn.textContent = 'Skip';
         running = false;
-        if (reduced) {
-          finishDemo();
-        } else {
-          playDemo();
-        }
+        playDemo();
       } else {
         skipped = true;
         skipBtn.textContent = 'Replay';

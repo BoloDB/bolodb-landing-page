@@ -29,6 +29,7 @@ const openSourceLinks = [
       </div>
     </div>
   </div>
+  <div class="bd-footer__copyright">&copy; {new Date().getFullYear()} BoloDB. All rights reserved.</div>
   <div class="bd-footer__wordmark" aria-hidden="true">
     <span>BoloDB</span>
   </div>
@@ -97,6 +98,12 @@ const openSourceLinks = [
   }
   .bd-footer__col a:hover {
     color: var(--ink);
+  }
+  .bd-footer__copyright {
+    max-width: 1060px;
+    margin: 32px auto 0;
+    font-size: 12px;
+    color: var(--faint);
   }
   .bd-footer__wordmark {
     display: flex;

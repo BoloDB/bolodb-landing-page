@@ -111,16 +111,8 @@ const dbs = [
   }
 </style>
 
-<script>
-  const DBS = [
-    { name: 'PostgreSQL', str: 'postgresql://readonly_user:pass@host:5432/dbname' },
-    { name: 'MySQL', str: 'mysql+pymysql://readonly_user:pass@host:3306/dbname' },
-    {
-      name: 'SQL Server',
-      str: 'mssql+pyodbc://readonly_user:pass@server/db?driver=ODBC+Driver+17+for+SQL+Server',
-    },
-  ];
-  const tabs = document.querySelectorAll<HTMLButtonElement>('.bd-connect__tab');
+<script define:vars={{ dbs }} is:inline>
+  const tabs = document.querySelectorAll('.bd-connect__tab');
   const stringEl = document.getElementById('bd-connect-string');
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -130,7 +122,7 @@ const dbs = [
       if (stringEl) {
         stringEl.style.opacity = '0';
         setTimeout(() => {
-          stringEl.textContent = DBS[index].str;
+          stringEl.textContent = dbs[index].str;
           stringEl.style.opacity = '1';
         }, 120);
       }

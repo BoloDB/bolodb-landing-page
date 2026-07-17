@@ -109,6 +109,24 @@ body.bolodb ::selection {
   background: rgba(var(--glow-rgb), 0.28);
 }
 
+/* Shared section-heading styles used by Demo, HowItWorks, Trust, and Connect */
+.bd-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--brand);
+}
+.bd-h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  max-width: 640px;
+  text-wrap: balance;
+}
+
 @keyframes mask-up {
   from {
     clip-path: inset(0 0 100% 0);
