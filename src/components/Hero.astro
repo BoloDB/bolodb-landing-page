@@ -25,20 +25,23 @@
     <a href="#" class="bd-hero__primary">Start for free</a>
     <a href="#demo" class="bd-hero__secondary">Watch it work ↓</a>
   </div>
+  <a href="#demo" class="bd-hero__scroll-cue" aria-label="Scroll to demo">
+    <span class="bd-hero__scroll-cue-dot"></span>
+  </a>
 </section>
 
 <style>
   .bd-hero {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 140px 24px 80px;
-    gap: 34px;
+    padding: clamp(96px, 20vh, 150px) 24px clamp(48px, 10vh, 90px);
+    gap: clamp(18px, 3.2vh, 34px);
   }
   .bd-hero__eyebrow {
     font-family: 'JetBrains Mono', monospace;
@@ -168,6 +171,63 @@
     border-color: var(--muted);
     color: var(--ink);
     transform: translateY(-2px);
+  }
+  .bd-hero__primary:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 6px 20px -8px rgba(var(--glow-rgb), 0.45);
+  }
+  .bd-hero__secondary:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  .bd-hero__scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 24px;
+    height: 38px;
+    border: 1.5px solid var(--border-2);
+    border-radius: 99px;
+    padding-top: 8px;
+    opacity: 0;
+    animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.1s both;
+    transition: border-color 0.2s;
+  }
+  .bd-hero__scroll-cue:hover {
+    border-color: var(--brand);
+  }
+  .bd-hero__scroll-cue-dot {
+    width: 4px;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--brand);
+    animation: scrollCue 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollCue {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    30% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  @media (max-height: 720px), (max-width: 640px) {
+    .bd-hero__scroll-cue {
+      display: none;
+    }
   }
 </style>
 

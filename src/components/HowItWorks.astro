@@ -43,6 +43,7 @@ const steps = [
     max-width: 1060px;
     margin: 0 auto;
     padding: 110px 24px;
+    scroll-margin-top: 84px;
   }
   .bd-how__head {
     display: flex;
@@ -66,10 +67,11 @@ const steps = [
     flex-direction: column;
     gap: 16px;
     min-height: 230px;
-    transition: background 0.25s;
+    transition: background 0.25s, transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
   .bd-how__card:hover {
     background: var(--card-hover);
+    transform: translateY(-4px);
   }
   .bd-how__num {
     font-family: 'JetBrains Mono', monospace;

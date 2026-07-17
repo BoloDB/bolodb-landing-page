@@ -120,6 +120,7 @@ WHERE status = 'completed'
     max-width: 1060px;
     margin: 0 auto;
     padding: 110px 24px;
+    scroll-margin-top: 84px;
   }
   .bd-trust__head {
     display: flex;
@@ -211,6 +212,7 @@ WHERE status = 'completed'
     border-radius: 99px;
     font-family: 'Hanken Grotesk', sans-serif;
     cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
   }
   .bd-trust__flip-btn:hover {
     border-color: var(--brand);
@@ -219,6 +221,9 @@ WHERE status = 'completed'
   .bd-trust__flip-btn--accent:hover {
     border-color: var(--accent);
     color: var(--accent);
+  }
+  .bd-trust__flip-btn:active {
+    transform: scale(0.96);
   }
   .bd-trust__side {
     display: flex;
@@ -234,6 +239,10 @@ WHERE status = 'completed'
     display: flex;
     flex-direction: column;
     gap: 14px;
+    transition: border-color 0.25s;
+  }
+  .bd-trust__reaches:hover {
+    border-color: var(--border-2);
   }
   .bd-trust__reaches-label {
     font-family: 'JetBrains Mono', monospace;
@@ -266,6 +275,11 @@ WHERE status = 'completed'
     display: flex;
     flex-direction: column;
     gap: 8px;
+    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.25s;
+  }
+  .bd-trust__mini-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-2);
   }
   .bd-trust__mini-title {
     font-size: 26px;

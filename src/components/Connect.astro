@@ -45,6 +45,7 @@ const dbs = [
     max-width: 1060px;
     margin: 0 auto;
     padding: 110px 24px;
+    scroll-margin-top: 84px;
   }
   .bd-connect__head {
     display: flex;
@@ -81,6 +82,9 @@ const dbs = [
   .bd-connect__tab:hover {
     color: var(--ink);
   }
+  .bd-connect__tab:active {
+    transform: scale(0.96);
+  }
   .bd-connect__tab[aria-selected='true'] {
     background: var(--surface-3);
     color: var(--ink);
@@ -99,6 +103,7 @@ const dbs = [
     overflow-x: auto;
     white-space: nowrap;
     padding: 4px 0;
+    transition: opacity 0.15s ease;
   }
   .bd-connect__tip {
     font-size: 13px;
@@ -122,7 +127,13 @@ const dbs = [
       const index = Number(tab.dataset.dbIndex);
       tabs.forEach((t) => t.setAttribute('aria-selected', 'false'));
       tab.setAttribute('aria-selected', 'true');
-      if (stringEl) stringEl.textContent = DBS[index].str;
+      if (stringEl) {
+        stringEl.style.opacity = '0';
+        setTimeout(() => {
+          stringEl.textContent = DBS[index].str;
+          stringEl.style.opacity = '1';
+        }, 120);
+      }
     });
   });
 </script>
