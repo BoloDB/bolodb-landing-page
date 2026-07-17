@@ -319,7 +319,7 @@
 <script>
   const QUESTIONS = [
     {
-      q: 'Which product category brings in the most revenue?',
+      q: 'Which 3 product categories bring in the most revenue?',
       sql: 'SELECT category, SUM(total) AS revenue\nFROM order_items\nJOIN products USING (product_id)\nGROUP BY category\nORDER BY revenue DESC\nLIMIT 3;',
       restate: 'Summed order-item totals grouped by product category, highest first.',
       cols: ['Category', 'Revenue'],
