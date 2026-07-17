@@ -9,7 +9,11 @@ interface Props {
   image?: string;
 }
 
-const { title, description = 'BoloDB - A modern database for your applications', image = '/favicon.svg' } = Astro.props;
+const {
+  title,
+  description = 'BoloDB — text-to-SQL for humans. Ask your data plain-English questions and get verified SQL, a readable explanation, and an honest confidence level. Your rows never leave your database.',
+  image = '/favicon.svg',
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -38,14 +42,168 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap"
+      rel="stylesheet"
+    />
     <title>{title}</title>
+
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('bolodb-theme');
+          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="min-h-screen antialiased">
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+  <body class="bolodb min-h-screen antialiased">
+    <div style="position: relative; min-height: 100vh;">
+      <canvas
+        id="bolodb-canvas"
+        aria-hidden="true"
+        style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;"></canvas>
+      <div
+        aria-hidden="true"
+        style={`position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.04; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px 200px;`}>
+      </div>
+
+      <Header />
+      <main style="position: relative; z-index: 2;">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <script>
+      const canvas = document.getElementById('bolodb-canvas') as HTMLCanvasElement | null;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+        let w = 0;
+        let h = 0;
+        const resize = () => {
+          w = canvas.width = window.innerWidth * dpr;
+          h = canvas.height = window.innerHeight * dpr;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+        const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+        const CD = [
+          [77, 166, 255],
+          [98, 224, 176],
+          [139, 123, 255],
+        ];
+        const CL = [
+          [27, 158, 107],
+          [43, 179, 214],
+          [95, 140, 220],
+        ];
+        const blobs = [
+          { x: 0.2, y: 0.15, r: 0.5, ci: 0, ax: 0.05, ay: 0.06, sp: 0.00013, ph: 0 },
+          { x: 0.82, y: 0.12, r: 0.45, ci: 1, ax: 0.06, ay: 0.05, sp: 0.00017, ph: 2 },
+          { x: 0.55, y: 0.8, r: 0.55, ci: 2, ax: 0.07, ay: 0.05, sp: 0.00011, ph: 4 },
+        ];
+        const N = 70;
+        const parts = Array.from({ length: N }, () => ({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: (Math.random() - 0.5) * 0.22,
+          r: Math.random() * 1.4 + 0.4,
+        }));
+        let animId = 0;
+        const draw = (t: number) => {
+          if (!ctx) return;
+          ctx.clearRect(0, 0, w, h);
+          ctx.globalCompositeOperation = 'lighter';
+          const pal = isDark() ? CD : CL;
+          const ba = isDark() ? 0.11 : 0.09;
+          for (const b of blobs) {
+            const cx = (b.x + Math.sin(t * b.sp + b.ph) * b.ax) * w;
+            const cy = (b.y + Math.cos(t * b.sp * 1.3 + b.ph) * b.ay) * h;
+            const rad = b.r * Math.max(w, h);
+            const cc = pal[b.ci];
+            const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+            g.addColorStop(0, `rgba(${cc[0]},${cc[1]},${cc[2]},${ba})`);
+            g.addColorStop(1, `rgba(${cc[0]},${cc[1]},${cc[2]},0)`);
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, w, h);
+          }
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.save();
+          ctx.scale(dpr, dpr);
+          for (const p of parts) {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0) p.x = window.innerWidth;
+            if (p.x > window.innerWidth) p.x = 0;
+            if (p.y < 0) p.y = window.innerHeight;
+            if (p.y > window.innerHeight) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 7);
+            ctx.fillStyle = isDark() ? 'rgba(148,190,235,0.35)' : 'rgba(27,110,75,0.35)';
+            ctx.fill();
+          }
+          for (let a = 0; a < N; a++) {
+            for (let b2 = a + 1; b2 < N; b2++) {
+              const dx = parts[a].x - parts[b2].x;
+              const dy = parts[a].y - parts[b2].y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < 9000) {
+                ctx.beginPath();
+                ctx.moveTo(parts[a].x, parts[a].y);
+                ctx.lineTo(parts[b2].x, parts[b2].y);
+                ctx.strokeStyle = `rgba(${isDark() ? '110,160,220' : '27,110,75'},${0.1 * (1 - d2 / 9000)})`;
+                ctx.stroke();
+              }
+            }
+          }
+          ctx.restore();
+        };
+        if (reduced) {
+          draw(6000);
+        } else {
+          const loop = (now: number) => {
+            if (!document.hidden) draw(now);
+            animId = requestAnimationFrame(loop);
+          };
+          animId = requestAnimationFrame(loop);
+        }
+      }
+
+      // Scroll reveal for elements marked with data-reveal
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealEls = document.querySelectorAll('[data-reveal]');
+      if (!reduced && revealEls.length) {
+        revealEls.forEach((el) => {
+          (el as HTMLElement).style.opacity = '0';
+          (el as HTMLElement).style.transform = 'translateY(22px)';
+          (el as HTMLElement).style.transition =
+            'opacity 0.7s cubic-bezier(0.22,0.61,0.36,1), transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+        });
+        const revealObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const target = entry.target as HTMLElement;
+                const d = (parseInt(target.getAttribute('data-reveal') || '1') || 1) * 90;
+                setTimeout(() => {
+                  target.style.opacity = '1';
+                  target.style.transform = 'none';
+                }, d);
+                revealObs.unobserve(target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        revealEls.forEach((el) => revealObs.observe(el));
+      }
+    </script>
   </body>
 </html>

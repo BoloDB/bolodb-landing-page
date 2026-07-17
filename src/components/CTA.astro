@@ -1,29 +1,112 @@
 ---
 ---
 
-<section class="py-20 md:py-28">
-  <div class="mx-auto max-w-6xl px-6">
-    <div class="rounded-2xl bg-primary p-12 text-center text-primary-foreground md:p-16">
-      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-        Ready to build?
-      </h2>
-      <p class="mx-auto mt-4 max-w-xl text-primary-foreground/80">
-        Start building with BoloDB today. Free tier includes 1GB storage, 100K reads, and 50K writes per month.
-      </p>
-      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a
-          href="https://app.bolodb.dev"
-          class="inline-flex h-11 items-center justify-center rounded-md bg-background px-8 text-sm font-medium text-foreground transition-colors hover:bg-background/90"
-        >
-          Start for Free
-        </a>
-        <a
-          href="https://docs.bolodb.dev"
-          class="inline-flex h-11 items-center justify-center rounded-md border border-primary-foreground/20 px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-        >
-          View Documentation
-        </a>
-      </div>
+<section class="bd-cta" data-screen-label="Final CTA">
+  <div class="bd-cta__panel" data-reveal="1">
+    <div class="bd-cta__glow" aria-hidden="true"></div>
+    <h2 class="bd-cta__title">Ask your first question in a minute.</h2>
+    <p class="bd-cta__subtitle">
+      No setup, no API keys — the AI is built in. Connect your database, or click once and explore the sample
+      store database.
+    </p>
+    <div class="bd-cta__actions">
+      <a href="#" class="bd-cta__primary">Start for free</a>
+      <a href="#" class="bd-cta__secondary">Try with sample data</a>
     </div>
   </div>
 </section>
+
+<style>
+  .bd-cta {
+    position: relative;
+    z-index: 2;
+    padding: 60px 24px 90px;
+  }
+  .bd-cta__panel {
+    position: relative;
+    max-width: 1060px;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid var(--border-2);
+    background:
+      radial-gradient(900px 420px at 50% 120%, rgba(var(--glow-rgb), 0.22) 0%, rgba(98, 224, 176, 0.1) 40%, transparent 70%),
+      var(--card-2);
+    padding: 96px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    text-align: center;
+  }
+  .bd-cta__glow {
+    position: absolute;
+    left: 50%;
+    bottom: -140px;
+    width: 520px;
+    height: 280px;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(139, 123, 255, 0.35), transparent);
+    filter: blur(30px);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  .bd-cta__title {
+    position: relative;
+    margin: 0;
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--ink);
+    max-width: 640px;
+    text-wrap: balance;
+  }
+  .bd-cta__subtitle {
+    position: relative;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 460px;
+  }
+  .bd-cta__actions {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .bd-cta__primary {
+    display: inline-flex;
+    align-items: center;
+    background: var(--contrast-bg);
+    color: var(--contrast-ink);
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 30px;
+    border-radius: 99px;
+    letter-spacing: -0.01em;
+    transition: all 0.18s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .bd-cta__primary:hover {
+    background: var(--brand);
+    color: var(--on-brand);
+    transform: translateY(-2px);
+  }
+  .bd-cta__secondary {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 16px 30px;
+    border-radius: 99px;
+    border: 1px solid var(--border-2);
+    transition: all 0.18s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .bd-cta__secondary:hover {
+    border-color: var(--muted);
+    transform: translateY(-2px);
+  }
+</style>
