@@ -320,6 +320,29 @@ const currentPath = Astro.url.pathname;
     setTimeout(() => themeIcon?.classList.remove('is-spinning'), 400);
   });
 
+  // Until the visitor makes an explicit choice, follow the OS light/dark
+  // preference live (e.g. their system flips to dark at sunset).
+  const schemeQuery = window.matchMedia('(prefers-color-scheme: light)');
+  schemeQuery.addEventListener('change', (e) => {
+    let hasChoice = false;
+    try {
+      const s = localStorage.getItem('bolodb-theme');
+      hasChoice = s === 'light' || s === 'dark';
+    } catch (err) {
+      // ignore storage errors
+    }
+    if (hasChoice) return;
+    const next = e.matches ? 'light' : 'dark';
+    const root = document.documentElement;
+    if (!reduceMotion) {
+      root.classList.add('theme-transitioning');
+      clearTimeout(themeSwapTimer);
+      themeSwapTimer = setTimeout(() => root.classList.remove('theme-transitioning'), 450);
+    }
+    root.setAttribute('data-theme', next);
+    syncIcon(next);
+  });
+
   const nav = document.querySelector('.bd-nav');
   const updateNavShadow = () => {
     nav?.classList.toggle('is-scrolled', window.scrollY > 8);

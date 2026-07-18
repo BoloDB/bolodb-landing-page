@@ -52,7 +52,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       (function () {
         try {
           var stored = localStorage.getItem('bolodb-theme');
-          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          var theme;
+          if (stored === 'light' || stored === 'dark') {
+            // An explicit user choice always wins.
+            theme = stored;
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            // First visit with no saved choice: honor the OS preference.
+            theme = 'light';
+          } else {
+            theme = 'dark';
+          }
           document.documentElement.setAttribute('data-theme', theme);
         } catch (e) {
           document.documentElement.setAttribute('data-theme', 'dark');
