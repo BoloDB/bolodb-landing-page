@@ -4,6 +4,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Offset in-page anchor jumps so section headings clear the fixed navbar. */
+  scroll-padding-top: 84px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,23 +1,30 @@
 ---
 const navItems = [
-  { label: 'Demo', href: '#demo' },
-  { label: 'Features', href: '#features' },
-  { label: 'Trust', href: '#trust' },
+  { label: 'Demo', href: '/#demo' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Connect', href: '/#connect' },
   { label: 'Blog', href: '/blog' },
   { label: 'Docs', href: 'https://docs.bolodb.dev' },
 ];
+const APP_URL = 'https://app.bolodb.dev';
 ---
 
 <header
-  class="nav-glass fixed top-0 left-0 right-0 z-50 border-b"
-  style={`background:var(--nav-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom-color:var(--border);`}
+  class="site-nav fixed top-0 left-0 right-0 z-50 border-b"
+  style="background:var(--nav-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom-color:var(--border);"
 >
-  <div class="mx-auto flex max-w-[1200px] items-center justify-between" style="padding:14px 28px;">
-    <!-- Logo -->
-    <a href="/" class="flex items-center gap-2.5 no-underline">
-      <span class="text-[15px] font-bold tracking-[-0.02em]" style="color:var(--ink)">Bolo<span style="color:var(--brand)">DB</span></span>
-      <svg width="24" height="24" viewBox="0 0 256 256" fill="none" aria-hidden="true">
-        <path d="M 52 44 Q 52 30 66 30 L 190 30 Q 204 30 204 44 L 204 138 Q 204 152 190 152 L 116 152 L 88 176 L 92 152 L 66 152 Q 52 152 52 138 Z" stroke="var(--brand)" stroke-width="6" fill="none"></path>
+  <div class="site-nav__bar mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4">
+    <!-- Logo (left) -->
+    <a href="/" class="flex items-center gap-2 no-underline" aria-label="BoloDB home">
+      <span class="text-[15px] font-bold tracking-[-0.02em]" style="color:var(--ink)"
+        >Bolo<span style="color:var(--brand)">DB</span></span
+      >
+      <svg class="site-nav__logo-icon" width="22" height="22" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+        <path
+          d="M 52 44 Q 52 30 66 30 L 190 30 Q 204 30 204 44 L 204 138 Q 204 152 190 152 L 116 152 L 88 176 L 92 152 L 66 152 Q 52 152 52 138 Z"
+          stroke="var(--brand)"
+          stroke-width="6"
+          fill="none"></path>
         <g stroke="var(--brand)" stroke-width="6" stroke-linecap="round" fill="none">
           <ellipse cx="128" cy="66" rx="34" ry="11"></ellipse>
           <path d="M 94 66 L 94 108 Q 94 119 128 119 Q 162 119 162 108 L 162 66"></path>
@@ -27,91 +34,265 @@ const navItems = [
       </svg>
     </a>
 
-    <!-- Nav links -->
-    <nav class="hidden md:flex items-center gap-0.5 text-[13px] font-medium" aria-label="Primary navigation">
-      {navItems.map((item) => (
-        <a
-          href={item.href}
-          class="rounded-md px-3 py-1.5 transition-colors"
-          style="color:var(--muted);"
-          onmouseover="this.style.color='var(--ink)'; this.style.background='var(--surface-2)'"
-          onmouseout="this.style.color='var(--muted)'; this.style.background='transparent'"
-        >
-          {item.label}
-        </a>
-      ))}
+    <!-- Nav links (center) -->
+    <nav class="site-nav__links hidden md:flex items-center justify-center gap-0.5" aria-label="Primary">
+      {
+        navItems.map((item) => (
+          <a href={item.href} class="site-nav__link">
+            {item.label}
+          </a>
+        ))
+      }
     </nav>
 
-    <!-- Actions -->
-    <div class="flex items-center gap-3">
-      <!-- Theme toggle -->
+    <!-- Actions (right) -->
+    <div class="site-nav__actions flex items-center justify-end gap-2">
       <button
         type="button"
         id="theme-toggle"
-        class="inline-flex h-[32px] w-[32px] items-center justify-center rounded-md border-0 bg-transparent p-0 text-sm leading-none transition-all"
-        style="color:var(--muted);"
+        class="site-nav__icon-btn"
         aria-label="Switch to light theme"
         aria-pressed="false"
-        onmouseover="this.style.color='var(--ink)'; this.style.background='var(--surface-2)'"
-        onmouseout="this.style.color='var(--muted)'; this.style.background='transparent'"
       >
         <span id="theme-icon">☀</span>
       </button>
 
-      <a
-        href="https://app.bolodb.dev"
-        class="hidden sm:inline-flex text-[13px] font-medium transition-colors"
-        style="color:var(--muted);"
-        onmouseover="this.style.color='var(--ink)'"
-        onmouseout="this.style.color='var(--muted)'"
+      <a href={APP_URL} class="site-nav__login hidden md:inline-flex">Log in</a>
+      <a href={APP_URL} class="site-nav__cta hidden md:inline-flex">Start free</a>
+
+      <!-- Hamburger (mobile only) -->
+      <button
+        type="button"
+        id="nav-toggle"
+        class="site-nav__icon-btn md:hidden"
+        aria-label="Open menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
       >
-        Log in
-      </a>
-      <a
-        href="https://app.bolodb.dev"
-        class="inline-flex items-center rounded-md px-4 py-2 text-[13px] font-semibold transition-all"
-        style="background:var(--contrast-bg); color:var(--contrast-ink); letter-spacing:-0.01em;"
-        onmouseover="this.style.background='var(--brand)'; this.style.color='var(--on-brand)'; this.style.transform='translateY(-1px)'"
-        onmouseout="this.style.background='var(--contrast-bg)'; this.style.color='var(--contrast-ink)'; this.style.transform='none'"
-      >
-        Start free
-      </a>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" x2="20" y1="7" y2="7"></line>
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="17" y2="17"></line>
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="site-nav__mobile md:hidden" aria-hidden="true" inert>
+    <nav class="site-nav__mobile-inner" aria-label="Mobile">
+      {
+        navItems.map((item) => (
+          <a href={item.href} class="site-nav__mobile-link" data-nav-close>
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={APP_URL} class="site-nav__mobile-link" data-nav-close>Log in</a>
+      <a href={APP_URL} class="site-nav__mobile-cta" data-nav-close>Start free</a>
+    </nav>
   </div>
 </header>
 
-<script is:inline>
-(function () {
-  const toggle = document.getElementById('theme-toggle');
-  const icon = document.getElementById('theme-icon');
-
-  function getTheme() {
-    return document.documentElement.getAttribute('data-theme') || 'dark';
+<style>
+  .site-nav__bar {
+    padding: 12px 28px;
   }
 
-  function updateIcon() {
-    const t = getTheme();
-    icon.textContent = t === 'dark' ? '☀' : '☾';
-    toggle.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-    toggle.setAttribute('aria-pressed', String(t === 'light'));
+  /* Right-hand action cluster sits flush to the end of its 1fr column. */
+  .site-nav__actions {
+    justify-self: end;
   }
 
-  toggle?.addEventListener('click', () => {
-    const current = getTheme();
-    const next = current === 'dark' ? 'light' : 'dark';
-
-    // Enable smooth theme transition
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduced) {
-      document.documentElement.classList.add('theme-transitioning');
-      setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 450);
+  /* The scoped display rules below out-specify Tailwind's md:hidden (equal
+     specificity, scoped wins by order), so hide the mobile-only controls on
+     desktop explicitly by id. */
+  @media (min-width: 768px) {
+    #nav-toggle,
+    #mobile-menu {
+      display: none;
     }
+  }
+  .site-nav__logo-icon {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  a:hover > .site-nav__logo-icon {
+    transform: rotate(-8deg) scale(1.08);
+  }
 
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+  .site-nav__link {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+  .site-nav__link:hover {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .site-nav__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+  .site-nav__icon-btn:hover {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+  .site-nav__icon-btn:active {
+    transform: scale(0.92);
+  }
+
+  .site-nav__login {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    align-items: center;
+    transition: color 0.15s ease;
+    white-space: nowrap;
+  }
+  .site-nav__login:hover {
+    color: var(--ink);
+  }
+
+  .site-nav__cta {
+    align-items: center;
+    background: var(--contrast-bg);
+    color: var(--contrast-ink);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding: 8px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  }
+  .site-nav__cta:hover {
+    background: var(--brand);
+    color: var(--on-brand);
+    transform: translateY(-1px);
+  }
+  .site-nav__cta:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  /* ── Mobile menu (accordion) ── */
+  .site-nav__mobile {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    transition: grid-template-rows 0.32s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.22s ease,
+      border-color 0.22s ease;
+  }
+  .site-nav__mobile.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    border-top-color: var(--border);
+  }
+  .site-nav__mobile-inner {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 20px 18px;
+  }
+  .site-nav__mobile-link {
+    color: var(--ink-2);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 12px;
+    border-radius: 10px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .site-nav__mobile-link:hover {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+  .site-nav__mobile-cta {
+    margin-top: 8px;
+    text-align: center;
+    background: var(--contrast-bg);
+    color: var(--contrast-ink);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 13px 16px;
+    border-radius: 10px;
+    transition: background 0.18s ease, color 0.18s ease;
+  }
+  .site-nav__mobile-cta:hover {
+    background: var(--brand);
+    color: var(--on-brand);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // ── Theme toggle ──
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+    const updateIcon = () => {
+      const t = getTheme();
+      if (icon) icon.textContent = t === 'dark' ? '☀' : '☾';
+      if (toggle) {
+        toggle.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+        toggle.setAttribute('aria-pressed', String(t === 'light'));
+      }
+    };
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    toggle?.addEventListener('click', () => {
+      const next = getTheme() === 'dark' ? 'light' : 'dark';
+      if (!reduced) {
+        document.documentElement.classList.add('theme-transitioning');
+        setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 450);
+      }
+      document.documentElement.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch (e) {}
+      updateIcon();
+    });
     updateIcon();
-  });
 
-  updateIcon();
-})();
+    // ── Mobile menu ──
+    const navToggle = document.getElementById('nav-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const setMenu = (open) => {
+      if (!menu || !navToggle) return;
+      menu.classList.toggle('is-open', open);
+      menu.setAttribute('aria-hidden', String(!open));
+      menu.toggleAttribute('inert', !open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    navToggle?.addEventListener('click', () => setMenu(!menu?.classList.contains('is-open')));
+    document.querySelectorAll('[data-nav-close]').forEach((el) => {
+      el.addEventListener('click', () => setMenu(false));
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu?.classList.contains('is-open')) setMenu(false);
+    });
+    // Close the menu if the viewport grows to desktop.
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setMenu(false);
+    });
+  })();
 </script>
