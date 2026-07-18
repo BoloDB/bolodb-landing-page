@@ -2,6 +2,7 @@ backend:
   name: github
   repo: BoloDB/bolodb-landing-page
   branch: main
+  base_url: https://bolodb-cms-auth.example.workers.dev # Replace with your Cloudflare Worker URL
 
 publish_mode: editorial_workflow
 

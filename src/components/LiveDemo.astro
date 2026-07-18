@@ -1,0 +1,36 @@
+---
+import LiveDemoReact from './LiveDemo.tsx';
+---
+
+<section
+  id="demo"
+  aria-labelledby="demo-title"
+  class="relative z-[2] mx-auto max-w-[1060px] px-6 pb-[110px] pt-[130px]"
+>
+  <div data-reveal="1" class="mb-[52px] flex flex-col" style="gap:14px;">
+    <span
+      class="text-xs tracking-[0.22em]"
+      style="font-family:'JetBrains Mono',monospace; color:var(--brand);"
+    >
+      01 — ASK
+    </span>
+    <h2
+      id="demo-title"
+      class="m-0 max-w-[640px] text-balance font-extrabold leading-[1.05]"
+      style="font-size:clamp(2rem,4vw,3.2rem); letter-spacing:-0.03em; color:var(--ink);"
+    >
+      A question becomes an answer. Watch it happen.
+    </h2>
+  </div>
+
+  <div id="demo-section" data-reveal="2">
+    <LiveDemoReact client:load />
+  </div>
+
+  <p
+    class="mx-auto mt-[18px] max-w-[520px] text-center text-[13px] leading-relaxed"
+    style="color:var(--faint);"
+  >
+    Every answer ships with its SQL, a plain-English restatement, and a confidence level computed from real signals — not the AI's self-esteem.
+  </p>
+</section>

@@ -1,0 +1,28 @@
+---
+const items = [
+  'READ-ONLY QUERIES',
+  'ROWS NEVER LEAVE YOUR DB',
+  'NO TELEMETRY',
+  'OPEN SOURCE · MIT',
+  'SELF-HOSTABLE',
+  'LEARNS FROM VERIFIED ANSWERS',
+];
+const doubled = [...items, ...items];
+---
+
+<div
+  aria-hidden="true"
+  class="relative z-[2] overflow-hidden border-y"
+  style={`border-color:var(--border); padding:14px 0; background:var(--ticker-bg);`}
+>
+  <div class="marquee-track">
+    {doubled.map((item) => (
+      <span
+        class="inline-flex items-center whitespace-nowrap px-7 text-xs tracking-[0.14em]"
+        style="font-family:'JetBrains Mono',monospace; color:var(--faint);"
+      >
+        <span style="color:#2f8f66;">✓</span>&nbsp;{item}
+      </span>
+    ))}
+  </div>
+</div>

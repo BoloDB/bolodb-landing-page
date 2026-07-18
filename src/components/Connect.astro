@@ -1,0 +1,29 @@
+---
+import ConnectTabs from './ConnectTabs.tsx';
+---
+
+<section
+  id="connect"
+  aria-labelledby="connect-title"
+  class="relative z-[2] mx-auto max-w-[1060px] px-6 py-[110px]"
+>
+  <div data-reveal="1" class="mb-[48px] flex flex-col" style="gap:14px;">
+    <span
+      class="text-xs tracking-[0.22em]"
+      style="font-family:'JetBrains Mono',monospace; color:var(--brand);"
+    >
+      04 — CONNECT
+    </span>
+    <h2
+      id="connect-title"
+      class="m-0 max-w-[560px] text-balance font-extrabold leading-[1.05]"
+      style="font-size:clamp(2rem,4vw,3.2rem); letter-spacing:-0.03em; color:var(--ink);"
+    >
+      Any SQL database. One connection string.
+    </h2>
+  </div>
+
+  <div data-reveal="2">
+    <ConnectTabs client:load />
+  </div>
+</section>

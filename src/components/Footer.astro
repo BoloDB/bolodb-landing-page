@@ -1,53 +1,72 @@
 ---
-const footerLinks = {
-  Product: [
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Open App', href: 'https://app.bolodb.dev' },
-  ],
-  Resources: [
-    { label: 'Documentation', href: 'https://docs.bolodb.dev' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Status', href: 'https://status.bolodb.dev' },
-  ],
-  Company: [
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: 'mailto:hello@bolodb.dev' },
-  ],
-};
 ---
 
-<footer class="border-t bg-muted/50">
-  <div class="mx-auto max-w-6xl px-6 py-12">
-    <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
-      <div class="col-span-2 md:col-span-1">
-        <a href="/" class="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <span class="text-primary">Bolo</span><span>DB</span>
-        </a>
-        <p class="mt-3 text-sm text-muted-foreground">
-          A modern database for your applications.
-        </p>
+<footer
+  class="relative z-[2] overflow-hidden border-t"
+  style="border-color:var(--border); padding:64px 32px 0;"
+>
+  <div class="mx-auto flex max-w-[1060px] flex-wrap justify-between" style="gap:32px; align-items:flex-start;">
+    <!-- Brand -->
+    <div class="flex flex-col" style="gap:10px;">
+      <span class="text-base font-extrabold tracking-tight" style="color:var(--ink);">
+        Bolo<span style="color:var(--brand);">DB</span>
+      </span>
+      <span class="text-[13px]" style="color:var(--faint);">Ask your data. Trust the answer.</span>
+      <span
+        class="text-[11px] tracking-[0.08em]"
+        style="font-family:'JetBrains Mono',monospace; color:var(--faint);"
+      >
+        NO TELEMETRY · NO CLOUD SYNC · MIT
+      </span>
+    </div>
+
+    <!-- Links -->
+    <div class="flex flex-wrap" style="gap:64px;">
+      <div class="flex flex-col text-[13.5px]" style="gap:10px;">
+        <span
+          class="text-[11px] tracking-[0.14em]"
+          style="font-family:'JetBrains Mono',monospace; color:var(--faint);"
+        >
+          PRODUCT
+        </span>
+        <a href="#demo" style="color:var(--muted);">Demo</a>
+        <a href="#how" style="color:var(--muted);">How it works</a>
+        <a href="#trust" style="color:var(--muted);">Trust</a>
       </div>
-      {Object.entries(footerLinks).map(([category, links]) => (
-        <div>
-          <h3 class="mb-3 text-sm font-semibold">{category}</h3>
-          <ul class="space-y-2">
-            {links.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  class="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <div class="flex flex-col text-[13.5px]" style="gap:10px;">
+        <span
+          class="text-[11px] tracking-[0.14em]"
+          style="font-family:'JetBrains Mono',monospace; color:var(--faint);"
+        >
+          OPEN SOURCE
+        </span>
+        <a href="https://github.com/BoloDB/bolodb" style="color:var(--muted);">GitHub</a>
+        <a href="https://github.com/BoloDB/bolodb/blob/master/docs/README.md" style="color:var(--muted);">Docs</a>
+        <a href="https://github.com/BoloDB/bolodb/blob/master/LICENSE" style="color:var(--muted);">MIT License</a>
+      </div>
     </div>
-    <div class="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-      &copy; {new Date().getFullYear()} BoloDB. All rights reserved.
-    </div>
+  </div>
+
+  <!-- Watermark -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none flex select-none justify-center"
+    style="margin-top:48px;"
+  >
+    <span
+      class="whitespace-nowrap font-extrabold"
+      style={{
+        fontSize: 'clamp(5rem,17.5vw,15rem)',
+        letterSpacing: '-0.04em',
+        lineHeight: '0.78',
+        color: 'transparent',
+        WebkitTextStroke: '1.5px var(--border-2)',
+        transform: 'translateY(14%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 75%, transparent 100%)',
+        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 75%, transparent 100%)',
+      }}
+    >
+      BoloDB
+    </span>
   </div>
 </footer>

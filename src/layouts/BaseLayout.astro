@@ -1,6 +1,7 @@
 ---
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import AmbientCanvas from '@/components/AmbientCanvas.astro';
 import '@/styles/global.css';
 
 interface Props {
@@ -9,8 +10,13 @@ interface Props {
   image?: string;
 }
 
-const { title, description = 'BoloDB - A modern database for your applications', image = '/favicon.svg' } = Astro.props;
+const {
+  title,
+  description = 'BoloDB turns plain-English questions into verified SQL, readable explanations, and confidence levels. Your database rows never leave your infrastructure.',
+  image = '/favicon.svg',
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev';
 ---
 
 <!doctype html>
@@ -19,15 +25,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="text to SQL, natural language database queries, AI SQL assistant, database analytics, verified SQL"
+    />
+    <meta name="author" content="BoloDB" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#070708" />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="BoloDB" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image:alt" content="BoloDB text-to-SQL analytics interface" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -36,16 +53,105 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
-    <title>{title}</title>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap"
+    />
+
+    <!-- Structured Data: SoftwareApplication -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BoloDB",
+      "url": siteUrl,
+      "description": "A text-to-SQL application that converts plain-English database questions into verified SQL and readable answers.",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Database Analytics",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/OnlineOnly"
+      },
+      "featureList": [
+        "Natural-language database queries",
+        "Verified SQL generation",
+        "Readable answer explanations",
+        "Confidence levels",
+        "Private database-row handling"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "BoloDB",
+        "url": siteUrl
+      }
+    })} />
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "BoloDB",
+      "url": siteUrl,
+      "logo": `${siteUrl}/favicon.svg`,
+      "sameAs": [
+        "https://github.com/BoloDB/bolodb"
+      ]
+    })} />
   </head>
-  <body class="min-h-screen antialiased">
+  <body>
+    <AmbientCanvas />
+    <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.04; background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); background-size:200px 200px"></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <Header />
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
+
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
+    <script is:inline>
+    (function () {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+      const els = document.querySelectorAll('[data-reveal]');
+      els.forEach(function (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(22px)';
+        el.style.transition = 'opacity 0.7s cubic-bezier(0.22,0.61,0.36,1), transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+      });
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var d = (parseInt(e.target.getAttribute('data-reveal')) || 1) * 90;
+            setTimeout(function () {
+              e.target.style.opacity = '1';
+              e.target.style.transform = 'none';
+            }, d);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(function (el) { obs.observe(el); });
+    })();
+    </script>
   </body>
 </html>
