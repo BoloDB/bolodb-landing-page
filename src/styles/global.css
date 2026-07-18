@@ -442,13 +442,23 @@ html.theme-transitioning *::after {
   }
 }
 
-/* ─── Mobile: disable backdrop-filter ─── */
+/* ─── Fixed nav: isolate the backdrop-filter blur ───
+   Promote the sticky header to its own compositing layer so its blur is
+   composited rather than repainted against the page on every scroll frame.
+   This is what keeps the smooth-scroll animation from stuttering. */
+.site-nav {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ─── Mobile: drop the backdrop-filter entirely ───
+   Blur is the most expensive part of the glass nav; phones gain more from a
+   solid bar than they lose in polish. */
 @media (max-width: 768px) {
-  .nav-glass {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .site-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     background: var(--bg) !important;
-    border-bottom: 1px solid var(--border);
   }
 }
 

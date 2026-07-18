@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import "./Medusae.css";
@@ -393,12 +393,39 @@ const Particles = () => {
 };
 
 const Medusae = ({ className, style }: { className?: string; style?: React.CSSProperties }) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Only run the WebGL render loop while the visualization is on-screen. A
+  // full-viewport shader rendering every frame while the user scrolls past it
+  // saturates the GPU and makes the page's smooth scroll stutter, so pause it
+  // once the hero leaves the viewport (and entirely under reduced-motion).
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setActive(false);
+      return;
+    }
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div
+      ref={rootRef}
       className={className ? `medusae-root ${className}` : "medusae-root"}
       style={style}
     >
-      <Canvas className="medusae-canvas" camera={{ position: [0, 0, 5] }}>
+      <Canvas
+        className="medusae-canvas"
+        frameloop={active ? "always" : "never"}
+        camera={{ position: [0, 0, 5] }}
+      >
         <Particles />
       </Canvas>
     </div>
