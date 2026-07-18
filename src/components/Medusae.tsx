@@ -398,21 +398,43 @@ const Medusae = ({ className, style }: { className?: string; style?: React.CSSPr
   // full-viewport shader rendering every frame while the user scrolls past it
   // saturates the GPU and makes the page's smooth scroll stutter, so pause it
   // once the hero leaves the viewport (and entirely under reduced-motion).
-  const [active, setActive] = useState(true);
+  // Seed from the reduced-motion preference so we never render an initial
+  // frame the effect immediately pauses.
+  const [active, setActive] = useState(
+    () =>
+      typeof window === "undefined" ||
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setActive(false);
-      return;
-    }
     const el = rootRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
-      { threshold: 0 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let inView = true;
+
+    // Render only when the hero is visible AND motion is allowed. Both inputs
+    // can change at runtime (scrolling, or the user flipping the OS setting),
+    // so re-derive `active` from the latest of each.
+    const sync = () => setActive(!motionQuery.matches && inView);
+
+    let io: IntersectionObserver | undefined;
+    if (el && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          inView = entry.isIntersecting;
+          sync();
+        },
+        { threshold: 0 }
+      );
+      io.observe(el);
+    }
+
+    motionQuery.addEventListener("change", sync);
+    sync();
+
+    return () => {
+      io?.disconnect();
+      motionQuery.removeEventListener("change", sync);
+    };
   }, []);
 
   return (
