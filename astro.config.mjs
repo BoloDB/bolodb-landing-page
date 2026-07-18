@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // site: 'https://bolodb.dev',
+  site: 'https://BoloDB.github.io',
   base: '/bolodb-landing-page/',
   integrations: [react(), tailwind(), sitemap()],
   markdown: {
