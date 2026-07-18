@@ -1,7 +1,7 @@
 ---
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
-import AmbientCanvas from '@/components/AmbientCanvas.astro';
+import ParticleBackground from '@/components/ParticleBackground.tsx';
 import '@/styles/global.css';
 
 interface Props {
@@ -33,7 +33,7 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
     />
     <meta name="author" content="BoloDB" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#070708" />
+    <meta name="theme-color" content="#08090A" />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
@@ -54,17 +54,17 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Fonts -->
+    <!-- Fonts: Inter + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400..600&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400..600&display=swap"
     />
 
     <!-- Structured Data: SoftwareApplication -->
@@ -110,8 +110,8 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
     })} />
   </head>
   <body>
-    <AmbientCanvas />
-    <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.04; background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); background-size:200px 200px"></div>
+    <ParticleBackground client:only="react" />
+    <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.03; background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); background-size:200px 200px"></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <Header />
     <main id="main-content">
@@ -151,6 +151,22 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
         });
       }, { threshold: 0.15 });
       els.forEach(function (el) { obs.observe(el); });
+    })();
+    </script>
+
+    <!-- Bento card mouse glow tracking -->
+    <script is:inline>
+    (function () {
+      document.addEventListener('mousemove', function (e) {
+        var cards = document.querySelectorAll('.bento-card');
+        cards.forEach(function (card) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', x + 'px');
+          card.style.setProperty('--mouse-y', y + 'px');
+        });
+      });
     })();
     </script>
   </body>

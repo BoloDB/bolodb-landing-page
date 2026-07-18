@@ -13,15 +13,15 @@ const doubled = [...items, ...items];
 <div
   aria-hidden="true"
   class="relative z-[2] overflow-hidden border-y"
-  style={`border-color:var(--border); padding:14px 0; background:var(--ticker-bg);`}
+  style={`border-color:var(--border); padding:12px 0; background:var(--ticker-bg); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);`}
 >
   <div class="marquee-track">
     {doubled.map((item) => (
       <span
-        class="inline-flex items-center whitespace-nowrap px-7 text-xs tracking-[0.14em]"
+        class="inline-flex items-center whitespace-nowrap px-7 text-[11px] tracking-[0.14em]"
         style="font-family:'JetBrains Mono',monospace; color:var(--faint);"
       >
-        <span style="color:#2f8f66;">✓</span>&nbsp;{item}
+        <span style="color:var(--accent); font-size:10px;">●</span>&nbsp;{item}
       </span>
     ))}
   </div>

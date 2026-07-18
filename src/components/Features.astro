@@ -1,0 +1,268 @@
+---
+import TrustFlip from './TrustFlip.tsx';
+---
+
+<section
+  id="features"
+  aria-labelledby="features-title"
+  class="relative z-[2] mx-auto max-w-[1100px] px-6 py-[120px]"
+>
+  <div data-reveal="1" class="mb-16 flex flex-col" style="gap:14px;">
+    <span
+      class="text-xs tracking-[0.22em]"
+      style="font-family:'JetBrains Mono',monospace; color:var(--brand);"
+    >
+      FEATURES
+    </span>
+    <h2
+      id="features-title"
+      class="m-0 max-w-[600px] text-balance font-extrabold leading-[1.05]"
+      style="font-size:clamp(2rem,4vw,3.2rem); letter-spacing:-0.03em; color:var(--ink);"
+    >
+      Everything you need to trust your data.
+    </h2>
+    <p class="m-0 max-w-[480px] text-[15px] leading-[1.65]" style="color:var(--muted);">
+      A unified workflow: connect, ask, verify. Built for analysts who need answers, not syntax.
+    </p>
+  </div>
+
+  <!-- Bento Grid -->
+  <div
+    data-reveal="2"
+    class="grid gap-4"
+    style="grid-template-columns: 1.15fr 0.85fr; grid-template-rows: auto auto auto;"
+  >
+    <!-- Row 1: Connect + Ask -->
+    <div class="bento-card flex flex-col" style="padding:32px; gap:18px;">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(var(--glow-rgb),0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+          </svg>
+        </div>
+        <span
+          class="text-[11px] tracking-[0.14em] font-medium"
+          style="font-family:'JetBrains Mono',monospace; color:var(--muted);"
+        >
+          STEP 01 — CONNECT
+        </span>
+      </div>
+      <span class="text-[22px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+        One connection string.
+      </span>
+      <span class="text-[14px] leading-[1.65]" style="color:var(--muted);">
+        Point BoloDB at any SQL database — PostgreSQL, MySQL, SQL Server. The AI is built in, no API keys needed. About a minute, total.
+      </span>
+      <div
+        class="mt-auto rounded-lg border overflow-hidden"
+        style="border-color:var(--border); background:var(--code-bg);"
+      >
+        <div
+          class="px-3 py-1.5 text-[10px] tracking-[0.1em] border-b"
+          style="font-family:'JetBrains Mono',monospace; color:var(--faint); border-color:var(--border); background:var(--surface-2);"
+        >
+          CONNECTION STRING
+        </div>
+        <code
+          class="block px-3 py-2.5 text-[12.5px] overflow-x-auto whitespace-nowrap"
+          style="font-family:'JetBrains Mono',monospace; color:var(--ok-ink);"
+        >
+          postgresql://readonly@host:5432/analytics
+        </code>
+      </div>
+    </div>
+
+    <div class="bento-card flex flex-col" style="padding:32px; gap:18px;">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(98,224,176,0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <span
+          class="text-[11px] tracking-[0.14em] font-medium"
+          style="font-family:'JetBrains Mono',monospace; color:var(--muted);"
+        >
+          STEP 02 — ASK
+        </span>
+      </div>
+      <span class="text-[22px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+        Plain English in.
+      </span>
+      <span class="text-[14px] leading-[1.65]" style="color:var(--muted);">
+        Type questions the way you'd ask a colleague. No SQL knowledge required, no schema spelunking.
+      </span>
+      <div class="mt-auto flex flex-col gap-2">
+        <div
+          class="self-end rounded-[14px] px-4 py-2.5 text-[13px]"
+          style="background:var(--surface-3); color:var(--ink); border-radius:14px 14px 4px 14px; max-width:90%;"
+        >
+          Which product category brings in the most revenue?
+        </div>
+        <div
+          class="self-start inline-flex items-center gap-2 text-[12px]"
+          style="color:var(--muted);"
+        >
+          <span
+            class="inline-block h-3 w-3 rounded-full"
+            style="border:2px solid var(--brand); border-top-color:transparent; animation:spin 0.8s linear infinite;"
+          ></span>
+          Writing SQL…
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Trust Flip + What reaches AI -->
+    <div data-reveal="3" class="bento-card" style="padding:0;">
+      <TrustFlip client:load />
+    </div>
+
+    <div data-reveal="3" class="bento-card flex flex-col" style="padding:28px; gap:14px;">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(243,143,129,0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--low)" stroke-width="2" stroke-linecap="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <span
+          class="text-[11px] tracking-[0.14em] font-medium"
+          style="font-family:'JetBrains Mono',monospace; color:var(--muted);"
+        >
+          PRIVACY
+        </span>
+      </div>
+      <span class="text-[20px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+        Your rows stay home.
+      </span>
+      <svg viewBox="0 0 320 96" class="h-auto w-full" aria-hidden="true">
+        <rect x="2" y="26" width="88" height="44" rx="10" fill="none" stroke="var(--border-2)"></rect>
+        <text x="46" y="45" text-anchor="middle" fill="var(--ink-2)" font-size="11" font-family="'Inter', sans-serif">Your DB</text>
+        <text x="46" y="60" text-anchor="middle" fill="var(--faint)" font-size="9" font-family="'JetBrains Mono', monospace">rows stay here</text>
+        <path d="M 96 38 H 218" stroke="var(--brand)" stroke-width="1.5" stroke-dasharray="6 6" style="animation:dashFlow 1.2s linear infinite"></path>
+        <text x="157" y="30" text-anchor="middle" fill="var(--brand)" font-size="9" font-family="'JetBrains Mono', monospace">schema + question</text>
+        <path d="M 96 60 H 150" stroke="#c75d4e" stroke-width="1.5" stroke-dasharray="4 5"></path>
+        <text x="123" y="76" text-anchor="middle" fill="var(--low)" font-size="9" font-family="'JetBrains Mono', monospace">rows ✕ never</text>
+        <line x1="146" y1="52" x2="158" y2="68" stroke="#c75d4e" stroke-width="1.5"></line>
+        <rect x="224" y="26" width="94" height="44" rx="10" fill="none" stroke="var(--border-2)"></rect>
+        <text x="271" y="45" text-anchor="middle" fill="var(--ink-2)" font-size="11" font-family="'Inter', sans-serif">Gemini AI</text>
+        <text x="271" y="60" text-anchor="middle" fill="var(--faint)" font-size="9" font-family="'JetBrains Mono', monospace">writes SQL only</text>
+      </svg>
+      <span class="text-[13px] leading-[1.6]" style="color:var(--muted);">
+        Only your question, the schema, and a few sample values are sent — never bulk table contents or credentials.
+      </span>
+    </div>
+
+    <!-- Row 3: Three small cards -->
+    <div data-reveal="4" class="grid grid-cols-3 gap-4" style="grid-column: 1 / -1;">
+      <div class="bento-card flex flex-col" style="padding:24px; gap:10px;">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(var(--glow-rgb),0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+          </svg>
+        </div>
+        <span class="text-[20px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+          Read-only
+        </span>
+        <span class="text-[13px] leading-[1.6]" style="color:var(--muted);">
+          Every query is parsed and rejected unless it's a plain SELECT. Twice — at the AI layer and the database layer.
+        </span>
+      </div>
+
+      <div class="bento-card flex flex-col" style="padding:24px; gap:10px;">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(98,224,176,0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <span class="text-[20px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+          Self-learning
+        </span>
+        <span class="text-[13px] leading-[1.6]" style="color:var(--muted);">
+          Every confirmed answer teaches it your database. Accuracy compounds with use — trust climbs as you verify.
+        </span>
+      </div>
+
+      <div class="bento-card flex flex-col" style="padding:24px; gap:10px;">
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-lg"
+          style="background:rgba(139,123,255,0.1);"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B7BFF" stroke-width="2" stroke-linecap="round">
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <line x1="2" x2="22" y1="10" y2="10"/>
+          </svg>
+        </div>
+        <span class="text-[20px] font-bold" style="letter-spacing:-0.02em; color:var(--ink);">
+          Local-first
+        </span>
+        <span class="text-[13px] leading-[1.6]" style="color:var(--muted);">
+          Knowledge and settings live on your machine. No telemetry, no cloud sync, no vendor lock-in.
+        </span>
+      </div>
+    </div>
+
+    <!-- Trust levels bar -->
+    <div
+      data-reveal="5"
+      class="bento-card flex flex-wrap items-center"
+      style="grid-column: 1 / -1; padding:28px; gap:28px;"
+    >
+      <div class="flex min-w-[200px] flex-col" style="gap:6px;">
+        <span
+          class="text-[11px] tracking-[0.14em]"
+          style="font-family:'JetBrains Mono',monospace; color:var(--muted);"
+        >
+          TRUST PROGRESSION
+        </span>
+        <span class="max-w-[340px] text-[14px] leading-[1.55]" style="color:var(--ink-2);">
+          Every answer you confirm teaches it. Trust climbs as you verify.
+        </span>
+      </div>
+      <div class="flex min-w-[320px] flex-1 items-center" style="gap:12px;">
+        <div class="flex flex-1 flex-col" style="gap:8px;">
+          <div class="h-[4px] rounded-full" style="background:linear-gradient(90deg,var(--border-2),var(--brand));"></div>
+          <span class="text-[12px] font-bold" style="color:var(--muted);">Supervised</span>
+          <span class="text-[11px] leading-[1.5]" style="color:var(--faint);">You check everything</span>
+        </div>
+        <div class="flex flex-1 flex-col" style="gap:8px;">
+          <div class="h-[4px] rounded-full" style="background:linear-gradient(90deg,var(--brand),var(--accent));"></div>
+          <span class="text-[12px] font-bold" style="color:var(--ink-2);">Assisted</span>
+          <span class="text-[11px] leading-[1.5]" style="color:var(--faint);">It knows your terms</span>
+        </div>
+        <div class="flex flex-1 flex-col" style="gap:8px;">
+          <div class="h-[4px] rounded-full" style="background:linear-gradient(90deg,var(--accent),var(--ok-ink));"></div>
+          <span class="text-[12px] font-bold" style="color:var(--ok-ink);">Trusted</span>
+          <span class="text-[11px] leading-[1.5]" style="color:var(--faint);">High confidence, verified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    #features > div:nth-child(2) {
+      grid-template-columns: 1fr !important;
+    }
+    #features .grid-cols-3 {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

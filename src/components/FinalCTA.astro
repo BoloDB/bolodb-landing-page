@@ -1,13 +1,13 @@
 ---
 ---
 
-<section class="relative z-[2] px-6 pb-[90px] pt-[60px]">
+<section class="relative z-[2] px-6 pb-[100px] pt-[60px]">
   <div
     data-reveal="1"
-    class="relative mx-auto max-w-[1060px] overflow-hidden rounded-[28px] border px-8 text-center"
+    class="relative mx-auto max-w-[1100px] overflow-hidden rounded-2xl border px-8 text-center"
     style={{
       borderColor: 'var(--border-2)',
-      background: 'radial-gradient(900px 420px at 50% 120%, rgba(var(--glow-rgb),0.22) 0%, rgba(98,224,176,0.1) 40%, transparent 70%), var(--card-2)',
+      background: 'radial-gradient(900px 420px at 50% 120%, rgba(var(--glow-rgb),0.18) 0%, rgba(98,224,176,0.08) 40%, transparent 70%), var(--card-2)',
       padding: '96px 32px',
     }}
   >
@@ -16,33 +16,33 @@
       aria-hidden="true"
       class="absolute bottom-[-140px] left-1/2 h-[280px] w-[520px] -translate-x-1/2"
       style={{
-        background: 'radial-gradient(closest-side, rgba(139,123,255,0.35), transparent)',
+        background: 'radial-gradient(closest-side, rgba(139,123,255,0.3), transparent)',
         filter: 'blur(30px)',
         animation: 'breathe 6s ease-in-out infinite',
       }}
     ></div>
 
     <h2
-      class="relative m-0 text-balance font-extrabold leading-[1.05]"
-      style="font-size:clamp(2.2rem,4.5vw,3.6rem); letter-spacing:-0.03em; color:var(--ink); max-width:640px;"
+      class="relative m-0 mx-auto text-balance font-extrabold leading-[1.05]"
+      style="font-size:clamp(2.2rem,4.5vw,3.6rem); letter-spacing:-0.03em; color:var(--ink); max-width:580px;"
     >
       Ask your first question in a minute.
     </h2>
     <p
-      class="relative mx-auto mt-6 max-w-[460px] text-base leading-relaxed"
+      class="relative mx-auto mt-5 max-w-[440px] text-[15px] leading-relaxed"
       style="color:var(--muted);"
     >
       No setup, no API keys — the AI is built in. Connect your database, or click once and explore the sample store database.
     </p>
-    <div class="relative mt-8 flex flex-wrap justify-center" style="gap:14px;">
+    <div class="relative mt-8 flex flex-wrap justify-center" style="gap:12px;">
       <a
         href="https://app.bolodb.dev"
-        class="inline-flex items-center rounded-full font-bold transition-all"
+        class="inline-flex items-center rounded-lg font-semibold transition-all"
         style={{
           background: 'var(--contrast-bg)',
           color: 'var(--contrast-ink)',
-          fontSize: '16px',
-          padding: '16px 30px',
+          fontSize: '15px',
+          padding: '14px 28px',
           letterSpacing: '-0.01em',
         }}
         onmouseover="this.style.background='var(--brand)'; this.style.color='var(--on-brand)'; this.style.transform='translateY(-2px)'"
@@ -52,16 +52,16 @@
       </a>
       <a
         href="#demo"
-        class="inline-flex items-center rounded-full font-semibold transition-all"
+        class="inline-flex items-center rounded-lg font-medium transition-all"
         style={{
           background: 'transparent',
-          color: 'var(--ink)',
-          fontSize: '16px',
-          padding: '16px 30px',
+          color: 'var(--ink-2)',
+          fontSize: '15px',
+          padding: '14px 28px',
           border: '1px solid var(--border-2)',
         }}
-        onmouseover="this.style.borderColor='var(--muted)'; this.style.transform='translateY(-2px)'"
-        onmouseout="this.style.borderColor='var(--border-2)'; this.style.transform='none'"
+        onmouseover="this.style.borderColor='var(--muted)'; this.style.color='var(--ink)'; this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.borderColor='var(--border-2)'; this.style.color='var(--ink-2)'; this.style.transform='none'"
       >
         Try with sample data
       </a>

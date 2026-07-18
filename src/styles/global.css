@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 html {
   scroll-behavior: smooth;
 }
@@ -22,221 +20,73 @@ html {
   }
 }
 
-body.bolodb {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Hanken Grotesk', system-ui, sans-serif;
-  transition: background 0.3s ease;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizelegibility;
-  overflow-x: clip;
-}
-
-body.bolodb a {
-  color: var(--link);
-  text-decoration: none;
-}
-
-body.bolodb a:hover {
-  color: var(--brand);
-}
-
-body.bolodb ::selection {
-  background: rgba(var(--glow-rgb), 0.28);
-}
-
-/* Ease every color/border between palettes while the theme toggles.
-   The class is only present for ~450ms right after a toggle, and is never
-   added for reduced-motion users (gated in JS). */
-html.theme-transitioning,
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition:
-    background-color 0.4s ease,
-    background-image 0.4s ease,
-    border-color 0.4s ease,
-    color 0.4s ease,
-    fill 0.4s ease,
-    stroke 0.4s ease,
-    box-shadow 0.4s ease !important;
-}
-
-/* Accessible, on-brand focus rings for keyboard users throughout. */
-body.bolodb a:focus-visible,
-body.bolodb button:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-/* Shared section-heading styles used by Demo, HowItWorks, Trust, and Connect */
-.bd-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  color: var(--brand);
-}
-.bd-h2 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  color: var(--ink);
-  max-width: 640px;
-  text-wrap: balance;
-}
-
-@keyframes mask-up {
-  from {
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(20px);
-  }
-  to {
-    clip-path: inset(0 0 -10% 0);
-    transform: none;
-  }
-}
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes pop-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  60% {
-    transform: scale(1.06);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@keyframes row-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.1;
-  }
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes dash-flow {
-  to {
-    stroke-dashoffset: -24;
-  }
-}
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scale(1.06);
-  }
-}
-
 @layer base {
-  /* Dark theme is the default */
+  /* ─── Dark theme (default) — Linear.app inspired ─── */
   :root {
-    --bg: #000000;
-    --ink: #f0f0f0;
-    --ink-2: #c4c5c7;
-    --muted: #8b8d91;
-    --faint: #56585c;
-    --border: #2c2e33;
-    --border-2: #3a3d42;
-    --card: #101114;
-    --card-2: #0d0e11;
-    --card-hover: #15171b;
-    --surface-2: #1a1b1f;
-    --surface-3: #26282d;
-    --code-bg: #131417;
-    --glass: rgba(20, 21, 24, 0.75);
-    --panel: rgba(17, 18, 20, 0.85);
-    --ticker-bg: rgba(10, 10, 11, 0.5);
-    --nav-bg: rgba(7, 7, 8, 0.55);
-    --brand: #4da6ff;
-    --brand-2: #3385ff;
-    --link: #80bfff;
-    --accent: #62e0b0;
-    --ok-ink: #65d6a2;
-    --on-brand: #04121f;
-    --low: #f38f81;
-    --contrast-bg: #f0f0f0;
-    --contrast-ink: #0a0a0a;
+    --bg: #08090A;
+    --ink: #FFFFFF;
+    --ink-2: #C8CCD0;
+    --muted: #8A8F98;
+    --faint: #4E5259;
+    --border: #1F2124;
+    --border-2: #2C2F35;
+    --card: #0D0E12;
+    --card-2: #0A0B0F;
+    --card-hover: #12141A;
+    --surface-2: #131519;
+    --surface-3: #1A1D23;
+    --code-bg: #0E1014;
+    --glass: rgba(13, 14, 18, 0.72);
+    --panel: rgba(10, 11, 15, 0.82);
+    --ticker-bg: rgba(8, 9, 10, 0.6);
+    --nav-bg: rgba(8, 9, 10, 0.55);
+    --brand: #4DA6FF;
+    --brand-2: #3385FF;
+    --link: #80BFFF;
+    --accent: #62E0B0;
+    --ok-ink: #65D6A2;
+    --on-brand: #04121F;
+    --low: #F38F81;
+    --contrast-bg: #F0F0F0;
+    --contrast-ink: #08090A;
     --glow-rgb: 77, 166, 255;
-    --grad-text: linear-gradient(92deg, #4da6ff 10%, #62e0b0 55%, #8b7bff 95%);
-    --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
-    --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
+    --grad-text: linear-gradient(92deg, #4DA6FF 10%, #62E0B0 55%, #8B7BFF 95%);
+    --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
+    --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.9);
   }
 
-  /* Light theme override */
+  /* ─── Light theme ─── */
   html[data-theme='light'] {
-    --bg: #eef1f0;
-    --ink: #16201b;
-    --ink-2: #2c3a33;
-    --muted: #5c6b63;
-    --faint: #8b978f;
-    --border: #e3e8e5;
-    --border-2: #d5dcd8;
-    --card: #ffffff;
-    --card-2: #f7f9f8;
-    --card-hover: #f7f9f8;
-    --surface-2: #f0f3f2;
-    --surface-3: #e7ecea;
-    --code-bg: #f0f3f2;
-    --glass: rgba(255, 255, 255, 0.8);
+    --bg: #F5F6F8;
+    --ink: #0F1118;
+    --ink-2: #2A2E36;
+    --muted: #5C6370;
+    --faint: #8B919C;
+    --border: #E2E4EA;
+    --border-2: #D1D4DB;
+    --card: #FFFFFF;
+    --card-2: #FAFBFC;
+    --card-hover: #F5F6F8;
+    --surface-2: #F0F1F4;
+    --surface-3: #E8E9ED;
+    --code-bg: #F0F1F4;
+    --glass: rgba(255, 255, 255, 0.82);
     --panel: rgba(255, 255, 255, 0.9);
     --ticker-bg: rgba(255, 255, 255, 0.5);
     --nav-bg: rgba(255, 255, 255, 0.72);
-    --brand: #1b9e6b;
-    --brand-2: #17875b;
-    --link: #0f6e48;
-    --accent: #17875b;
-    --ok-ink: #0f6e48;
-    --on-brand: #ffffff;
-    --low: #9a4337;
-    --contrast-bg: #16201b;
-    --contrast-ink: #ffffff;
-    --glow-rgb: 27, 158, 107;
-    --grad-text: linear-gradient(92deg, #0f6e48 10%, #1b9e6b 55%, #2b6cb0 95%);
-    --shadow-lg: 0 24px 60px -24px rgba(20, 40, 30, 0.22);
-    --shadow-xl: 0 40px 90px -34px rgba(20, 40, 30, 0.28);
+    --brand: #1B7FD4;
+    --brand-2: #1568B0;
+    --link: #1469A8;
+    --accent: #17875B;
+    --ok-ink: #0F6E48;
+    --on-brand: #FFFFFF;
+    --low: #C24E3D;
+    --contrast-bg: #0F1118;
+    --contrast-ink: #FFFFFF;
+    --glow-rgb: 27, 127, 212;
+    --grad-text: linear-gradient(92deg, #1469A8 10%, #17875B 55%, #5B5BD6 95%);
+    --shadow-lg: 0 24px 60px -24px rgba(15, 17, 24, 0.12);
+    --shadow-xl: 0 40px 90px -34px rgba(15, 17, 24, 0.16);
   }
 
   * {
@@ -246,8 +96,9 @@ body.bolodb button:focus-visible {
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: clip;
     transition: background 0.3s ease, color 0.3s ease;
@@ -266,7 +117,116 @@ body.bolodb button:focus-visible {
   }
 }
 
-/* ---- Animations ---- */
+/* ─── Theme transition smoothing ─── */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.4s ease,
+    background-image 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease,
+    box-shadow 0.4s ease !important;
+}
+
+/* ─── Focus styles ─── */
+:where(a, button, summary):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ─── Shared section headings ─── */
+.bd-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--brand);
+}
+.bd-h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  max-width: 640px;
+  text-wrap: balance;
+}
+
+/* ─── Bento Grid Card System ─── */
+.bento-card {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  overflow: hidden;
+  transition: border-color 0.3s ease, background 0.2s ease;
+}
+
+.bento-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--glow-rgb), 0) 0%,
+    rgba(var(--glow-rgb), 0) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.bento-card:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--glow-rgb), 0.35) 0%,
+    rgba(var(--glow-rgb), 0.08) 40%,
+    transparent 70%
+  );
+}
+
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(var(--glow-rgb), 0.06),
+    transparent 40%
+  );
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.bento-card:hover::after {
+  opacity: 1;
+}
+
+.bento-card:hover {
+  border-color: var(--border-2);
+  background: var(--card-hover);
+}
+
+/* ─── Glassmorphism utility ─── */
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+/* ─── Keyframe Animations ─── */
 @keyframes maskUp {
   from {
     clip-path: inset(0 0 100% 0);
@@ -348,8 +308,75 @@ body.bolodb button:focus-visible {
     transform: scale(1.06);
   }
 }
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
 
-/* ---- Skip link ---- */
+/* Duplicate keyframes with kebab-case names for backward compat */
+@keyframes mask-up {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(20px);
+  }
+  to {
+    clip-path: inset(0 0 -10% 0);
+    transform: none;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* ─── Skip link ─── */
 .skip-link {
   position: fixed;
   top: 0.75rem;
@@ -370,13 +397,7 @@ body.bolodb button:focus-visible {
   outline-offset: 3px;
 }
 
-/* ---- Focus styles ---- */
-:where(a, button, summary):focus-visible {
-  outline: 3px solid var(--brand);
-  outline-offset: 3px;
-}
-
-/* ---- Marquee ---- */
+/* ─── Marquee ─── */
 .marquee-track {
   display: flex;
   gap: 0;
@@ -384,14 +405,14 @@ body.bolodb button:focus-visible {
   animation: marquee 36s linear infinite;
 }
 
-/* ---- Scroll reveal (JS-driven) ---- */
+/* ─── Scroll reveal (JS-driven) ─── */
 [data-reveal] {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* ---- Staggered entrance animations (CSS only, no JS needed) ---- */
+/* ─── Staggered entrance animations ─── */
 .anim-rise-in {
   animation: riseIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
@@ -401,7 +422,7 @@ body.bolodb button:focus-visible {
 .anim-delay-4 { animation-delay: 0.4s; }
 .anim-delay-5 { animation-delay: 0.5s; }
 
-/* ---- Reduced motion ---- */
+/* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -416,7 +437,7 @@ body.bolodb button:focus-visible {
   }
 }
 
-/* ---- Mobile: disable backdrop-filter ---- */
+/* ─── Mobile: disable backdrop-filter ─── */
 @media (max-width: 768px) {
   .nav-glass {
     backdrop-filter: none;
@@ -426,67 +447,77 @@ body.bolodb button:focus-visible {
   }
 }
 
-/* ---- Prose (blog) ---- */
+/* ─── Prose (blog) ─── */
 .prose {
   max-width: none;
-  color: var(--ink);
+  color: var(--ink-2);
 }
 .prose h1 {
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   margin-bottom: 1rem;
+  color: var(--ink);
 }
 .prose h2 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: -0.02em;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.75rem;
+  color: var(--ink);
 }
 .prose h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 1.5rem;
+  letter-spacing: -0.015em;
+  margin-top: 1.75rem;
   margin-bottom: 0.5rem;
+  color: var(--ink);
 }
 .prose p {
-  margin: 1rem 0;
-  line-height: 1.75;
+  margin: 1.25rem 0;
+  line-height: 1.8;
+  color: var(--ink-2);
 }
 .prose a {
-  color: var(--link);
+  color: var(--brand);
   text-decoration: underline;
   text-underline-offset: 4px;
+  text-decoration-color: rgba(var(--glow-rgb), 0.3);
+  transition: text-decoration-color 0.2s ease;
 }
 .prose a:hover {
-  color: var(--brand);
+  text-decoration-color: var(--brand);
 }
 .prose strong {
   font-weight: 600;
+  color: var(--ink);
 }
 .prose code {
   position: relative;
-  border-radius: 0.25rem;
+  border-radius: 6px;
   background: var(--surface-2);
-  padding: 0.15rem 0.3rem;
+  padding: 0.2rem 0.4rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875rem;
+  font-size: 0.85em;
   font-weight: 500;
+  color: var(--brand);
 }
 .prose pre {
-  margin: 1.5rem 0;
+  margin: 1.75rem 0;
   overflow-x: auto;
-  border-radius: 0.5rem;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--code-bg);
-  padding: 1rem;
+  padding: 1.25rem;
 }
 .prose pre code {
   background: transparent;
   padding: 0;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
+  color: var(--ink-2);
 }
 .prose ul {
   margin: 1.5rem 0;
@@ -499,39 +530,44 @@ body.bolodb button:focus-visible {
   list-style-type: decimal;
 }
 .prose li {
-  margin: 0.25rem 0;
+  margin: 0.35rem 0;
   padding-left: 0.25rem;
+  line-height: 1.75;
 }
 .prose blockquote {
-  margin: 1.5rem 0;
-  border-left: 2px solid var(--border);
+  margin: 1.75rem 0;
+  border-left: 3px solid var(--brand);
   padding-left: 1.5rem;
   font-style: italic;
   color: var(--muted);
 }
 .prose img {
-  margin: 1.5rem 0;
-  border-radius: 0.5rem;
+  margin: 2rem 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 .prose hr {
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   border-color: var(--border);
 }
 .prose table {
   margin: 1.5rem 0;
   width: 100%;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 12px;
   border: 1px solid var(--border);
 }
 .prose th {
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1rem;
   text-align: left;
   font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 .prose td {
   border-bottom: 1px solid var(--border);
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1rem;
 }
