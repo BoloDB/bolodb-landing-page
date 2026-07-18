@@ -52,7 +52,6 @@ const APP_URL = 'https://app.bolodb.dev';
         id="theme-toggle"
         class="site-nav__icon-btn"
         aria-label="Switch to light theme"
-        aria-pressed="false"
       >
         <span id="theme-icon">☀</span>
       </button>
@@ -99,8 +98,10 @@ const APP_URL = 'https://app.bolodb.dev';
     padding: 12px 28px;
   }
 
-  /* Right-hand action cluster sits flush to the end of its 1fr column. */
+  /* Pin the action cluster to the right column so it stays right-aligned even
+     on mobile, where the hidden center nav drops out of grid placement. */
   .site-nav__actions {
+    grid-column: 3;
     justify-self: end;
   }
 
@@ -254,7 +255,6 @@ const APP_URL = 'https://app.bolodb.dev';
       if (icon) icon.textContent = t === 'dark' ? '☀' : '☾';
       if (toggle) {
         toggle.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-        toggle.setAttribute('aria-pressed', String(t === 'light'));
       }
     };
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -288,7 +288,10 @@ const APP_URL = 'https://app.bolodb.dev';
       el.addEventListener('click', () => setMenu(false));
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && menu?.classList.contains('is-open')) setMenu(false);
+      if (e.key === 'Escape' && menu?.classList.contains('is-open')) {
+        setMenu(false);
+        navToggle?.focus();
+      }
     });
     // Close the menu if the viewport grows to desktop.
     window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {

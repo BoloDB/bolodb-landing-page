@@ -55,6 +55,8 @@ html {
     --grad-text: linear-gradient(92deg, #4DA6FF 10%, #62E0B0 55%, #8B7BFF 95%);
     --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
     --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.9);
+    /* Footer watermark outline — must read against the near-black bg. */
+    --wordmark-stroke: rgba(255, 255, 255, 0.14);
   }
 
   /* ─── Light theme ─── */
@@ -89,6 +91,7 @@ html {
     --grad-text: linear-gradient(92deg, #1469A8 10%, #17875B 55%, #5B5BD6 95%);
     --shadow-lg: 0 24px 60px -24px rgba(15, 17, 24, 0.12);
     --shadow-xl: 0 40px 90px -34px rgba(15, 17, 24, 0.16);
+    --wordmark-stroke: rgba(15, 17, 24, 0.12);
   }
 
   * {
