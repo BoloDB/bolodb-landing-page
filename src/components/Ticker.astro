@@ -39,6 +39,9 @@ const doubled = [...items, ...items];
     width: max-content;
     animation: marquee 36s linear infinite;
   }
+  .bd-ticker:hover .bd-ticker__track {
+    animation-play-state: paused;
+  }
   .bd-ticker__item {
     display: inline-flex;
     align-items: center;
