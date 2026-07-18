@@ -17,7 +17,10 @@ export default function TrustFlip() {
         <div
           className="absolute inset-0 flex flex-col"
           style={{
+            WebkitBackfaceVisibility: 'hidden',
             backfaceVisibility: 'hidden',
+            background: 'var(--card)',
+            borderRadius: '20px',
             padding: '28px',
             gap: '16px',
           }}
@@ -95,8 +98,11 @@ export default function TrustFlip() {
         <div
           className="absolute inset-0 flex flex-col"
           style={{
+            WebkitBackfaceVisibility: 'hidden',
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
+            background: 'var(--card-2)',
+            borderRadius: '20px',
             padding: '28px',
             gap: '16px',
           }}
