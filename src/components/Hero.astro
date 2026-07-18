@@ -1,4 +1,5 @@
 ---
+import Medusae from '@/components/Medusae.tsx';
 ---
 
 <section
@@ -7,6 +8,7 @@
   class="relative z-[2] flex min-h-screen flex-col items-center justify-center px-6 pb-20 pt-[140px] text-center"
   style="gap:36px;"
 >
+  <Medusae client:only="react" />
   <div
     class="font-medium tracking-[0.22em] anim-rise-in anim-delay-1"
     style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent);"
@@ -20,7 +22,7 @@
         class="block whitespace-nowrap font-extrabold leading-[1.05]"
         style="font-size:clamp(2.5rem,7vw,6.5rem); letter-spacing:-0.035em; color:var(--ink);"
       >
-        Ask your data.
+        Talk to your database
       </span>
     </span>
     <span class="block overflow-hidden" style="animation:maskUp 0.8s cubic-bezier(0.22,0.61,0.36,1) 0.35s both;">
@@ -28,7 +30,7 @@
         class="block whitespace-nowrap bg-clip-text font-extrabold leading-[1.05] text-transparent"
         style="font-size:clamp(2.5rem,7vw,6.5rem); letter-spacing:-0.035em; background:var(--grad-text); -webkit-background-clip:text; background-clip:text;"
       >
-        Trust the answer.
+        like a human.
       </span>
     </span>
   </h1>
@@ -37,7 +39,7 @@
     class="m-0 max-w-[520px] text-balance anim-rise-in anim-delay-3"
     style="font-size:clamp(1rem,1.5vw,1.2rem); line-height:1.7; color:var(--muted); letter-spacing:-0.01em;"
   >
-    Plain-English questions in. Verified SQL, a readable explanation, and an honest confidence level out. Your rows never leave your database.
+    No SQL required. Ask questions in plain English, get instant answers, and trust the logic with our verifiable AI engine.
   </p>
 
   <!-- Typed search bar -->
