@@ -67,11 +67,15 @@ const steps = [
     flex-direction: column;
     gap: 16px;
     min-height: 230px;
-    transition: background 0.25s, transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition:
+      background 0.25s,
+      transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+      box-shadow 0.25s ease;
   }
   .bd-how__card:hover {
     background: var(--card-hover);
     transform: translateY(-4px);
+    box-shadow: 0 18px 40px -24px rgba(var(--glow-rgb), 0.5);
   }
   .bd-how__num {
     font-family: 'JetBrains Mono', monospace;
