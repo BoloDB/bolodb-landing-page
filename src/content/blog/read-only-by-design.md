@@ -19,7 +19,7 @@ The rules are simple and absolute:
 
 - ✅ `SELECT` statements → allowed
 - ❌ `INSERT`, `UPDATE`, `DELETE` → rejected
-- ❌ `DROP`, `ALTER`, `TRUNCATE` → rejected  
+- ❌ `DROP`, `ALTER`, `TRUNCATE` → rejected
 - ❌ `CREATE`, `GRANT`, `REVOKE` → rejected
 - ❌ Subqueries containing any mutation → rejected
 
