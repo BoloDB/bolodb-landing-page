@@ -4,6 +4,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Offset in-page anchor jumps so section headings clear the fixed navbar. */
+  scroll-padding-top: 84px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -53,6 +55,8 @@ html {
     --grad-text: linear-gradient(92deg, #4DA6FF 10%, #62E0B0 55%, #8B7BFF 95%);
     --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
     --shadow-xl: 0 40px 90px -30px rgba(0, 0, 0, 0.9);
+    /* Footer watermark outline — must read against the near-black bg. */
+    --wordmark-stroke: rgba(255, 255, 255, 0.14);
   }
 
   /* ─── Light theme ─── */
@@ -87,6 +91,7 @@ html {
     --grad-text: linear-gradient(92deg, #1469A8 10%, #17875B 55%, #5B5BD6 95%);
     --shadow-lg: 0 24px 60px -24px rgba(15, 17, 24, 0.12);
     --shadow-xl: 0 40px 90px -34px rgba(15, 17, 24, 0.16);
+    --wordmark-stroke: rgba(15, 17, 24, 0.12);
   }
 
   * {
@@ -437,13 +442,23 @@ html.theme-transitioning *::after {
   }
 }
 
-/* ─── Mobile: disable backdrop-filter ─── */
+/* ─── Fixed nav: isolate the backdrop-filter blur ───
+   Promote the sticky header to its own compositing layer so its blur is
+   composited rather than repainted against the page on every scroll frame.
+   This is what keeps the smooth-scroll animation from stuttering. */
+.site-nav {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ─── Mobile: drop the backdrop-filter entirely ───
+   Blur is the most expensive part of the glass nav; phones gain more from a
+   solid bar than they lose in polish. */
 @media (max-width: 768px) {
-  .nav-glass {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .site-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     background: var(--bg) !important;
-    border-bottom: 1px solid var(--border);
   }
 }
 

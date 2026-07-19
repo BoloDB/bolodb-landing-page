@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import "./Medusae.css";
@@ -123,8 +123,8 @@ const Particles = () => {
             varying vec2 vUv;
             varying float vSize;
             varying vec2 vPos;
-            
-            attribute vec3 aOffset; 
+
+            attribute vec3 aOffset;
             attribute float aRandom;
 
             #define PI 3.14159265359
@@ -137,12 +137,12 @@ const Particles = () => {
                 vec2 i = floor(p);
                 vec2 f = fract(p);
                 f = f * f * (3.0 - 2.0 * f);
-                
+
                 float a = hash(i);
                 float b = hash(i + vec2(1.0, 0.0));
                 float c = hash(i + vec2(0.0, 1.0));
                 float d = hash(i + vec2(1.0, 1.0));
-                
+
                 return mix( mix(a, b, f.x), mix(c, d, f.x), f.y);
             }
 
@@ -153,28 +153,28 @@ const Particles = () => {
 
             void main() {
                 vUv = uv;
-                
+
                 // --- 1. ALIVE FLOW (Base layer) ---
                 vec3 pos = aOffset;
-                
+
                 float driftSpeed = uTime * 0.15;
-                
+
                 float dx = sin(driftSpeed + pos.y * 0.5) + sin(driftSpeed * 0.5 + pos.y * 2.0);
                 float dy = cos(driftSpeed + pos.x * 0.5) + cos(driftSpeed * 0.5 + pos.x * 2.0);
-                
-                pos.x += dx * 0.25; 
+
+                pos.x += dx * 0.25;
                 pos.y += dy * 0.25;
 
                 // --- 2. THE JELLYFISH HALO (Smooth & Subtle) ---
-                
+
                 vec2 relToMouse = pos.xy - uMouse;
                 vec2 haloScale = max(vec2(uHaloScaleX, uHaloScaleY), vec2(0.0001));
                 float distFromMouse = length(relToMouse / haloScale);
                 float angleToMouse = atan(relToMouse.y, relToMouse.x);
                 vec2 dirToMouse = normalize(relToMouse + vec2(0.0001, 0.0));
-                
+
                 float shapeFactor = noise(dirToMouse * 2.0 + vec2(0.0, uTime * 0.1));
-                
+
                 float radiusBase = uHaloRadiusBase;
                 float radiusAmplitude = uHaloRadiusAmplitude;
                 float shapeAmplitude = uHaloShapeAmplitude;
@@ -183,19 +183,19 @@ const Particles = () => {
                 float outerEndOffset = uHaloOuterEndOffset;
 
                 float breathCycle = sin(uTime * 0.8);
-                
+
                 float baseRadius = radiusBase + breathCycle * radiusAmplitude;
                 float currentRadius = baseRadius + (shapeFactor * shapeAmplitude);
-                
-                float dist = distFromMouse; 
+
+                float dist = distFromMouse;
                 float rimInfluence = smoothstep(rimWidth, 0.0, abs(dist - currentRadius));
-                
+
                 vec2 pushDir = normalize(relToMouse + vec2(0.0001, 0.0));
-                
+
                 float pushAmt = (breathCycle * 0.5 + 0.5) * 0.5;
-                
+
                 pos.xy += pushDir * pushAmt * rimInfluence;
-                
+
                 pos.z += rimInfluence * 0.3 * sin(uTime);
 
                 // --- 3.5 OUTER OSCILLATION (Smooth, Faster) ---
@@ -204,23 +204,23 @@ const Particles = () => {
                 pos.xy += normalize(relToMouse + vec2(0.0001, 0.0)) * outerOsc * uOuterOscAmplitude * outerInfluence;
 
                 // --- 4. SIZE & SCALE ---
-                
+
                 float baseSize = uParticleBaseSize + (sin(uTime + pos.x)*0.003);
-                
-                float activeSize = uParticleActiveSize; 
+
+                float activeSize = uParticleActiveSize;
                 float currentScale = baseSize + (rimInfluence * activeSize);
-                
+
                 float stretch = rimInfluence * 0.02;
-                
+
                 vec3 transformed = position;
                 transformed.x *= (currentScale + stretch) * uBlobScaleX;
-                transformed.y *= currentScale * uBlobScaleY; 
-                
+                transformed.y *= currentScale * uBlobScaleY;
+
                 vSize = rimInfluence;
                 vPos = pos.xy;
-                
+
                 // --- 5. ROTATION ---
-                
+
                 float dirLen = max(length(relToMouse), 0.0001);
                 vec2 dir = relToMouse / dirLen;
                 float oscPhase = aRandom * 6.28318530718;
@@ -236,7 +236,7 @@ const Particles = () => {
                 vec2 jitteredDir = normalize(dir + perp * jitter);
                 mat2 rot = mat2(jitteredDir.x, jitteredDir.y, -jitteredDir.y, jitteredDir.x);
                 transformed.xy = rot * transformed.xy;
-                
+
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(pos + transformed, 1.0);
             }
         `,
@@ -252,26 +252,26 @@ const Particles = () => {
 
             void main() {
                 vec2 center = vec2(0.5);
-                vec2 pos = abs(vUv - center) * 2.0; 
-                
+                vec2 pos = abs(vUv - center) * 2.0;
+
                 float d = pow(pow(pos.x, 2.6) + pow(pos.y, 2.6), 1.0/2.6);
                 float alpha = 1.0 - smoothstep(0.8, 1.0, d);
-                
+
                 if (alpha < 0.01) discard;
 
                 vec3 black = uParticleColorBase;
                 vec3 cBlue = uParticleColorOne;
                 vec3 cRed = uParticleColorTwo;
                 vec3 cYellow = uParticleColorThree;
-                
+
                 float t = uTime * 1.2;
-                
+
                 float p1 = sin(vPos.x * 0.8 + t);
                 float p2 = sin(vPos.y * 0.8 + t * 0.8 + p1);
-                
+
                 vec3 activeColor = mix(cBlue, cRed, p1 * 0.5 + 0.5);
                 activeColor = mix(activeColor, cYellow, p2 * 0.5 + 0.5);
-                
+
                 vec3 finalColor = mix(black, activeColor, smoothstep(0.1, 0.8, vSize));
                 float finalAlpha = alpha * mix(0.4, 0.95, vSize);
 
@@ -393,12 +393,61 @@ const Particles = () => {
 };
 
 const Medusae = ({ className, style }: { className?: string; style?: React.CSSProperties }) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Only run the WebGL render loop while the visualization is on-screen. A
+  // full-viewport shader rendering every frame while the user scrolls past it
+  // saturates the GPU and makes the page's smooth scroll stutter, so pause it
+  // once the hero leaves the viewport (and entirely under reduced-motion).
+  // Seed from the reduced-motion preference so we never render an initial
+  // frame the effect immediately pauses.
+  const [active, setActive] = useState(
+    () =>
+      typeof window === "undefined" ||
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  useEffect(() => {
+    const el = rootRef.current;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let inView = true;
+
+    // Render only when the hero is visible AND motion is allowed. Both inputs
+    // can change at runtime (scrolling, or the user flipping the OS setting),
+    // so re-derive `active` from the latest of each.
+    const sync = () => setActive(!motionQuery.matches && inView);
+
+    let io: IntersectionObserver | undefined;
+    if (el && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          inView = entry.isIntersecting;
+          sync();
+        },
+        { threshold: 0 }
+      );
+      io.observe(el);
+    }
+
+    motionQuery.addEventListener("change", sync);
+    sync();
+
+    return () => {
+      io?.disconnect();
+      motionQuery.removeEventListener("change", sync);
+    };
+  }, []);
+
   return (
     <div
+      ref={rootRef}
       className={className ? `medusae-root ${className}` : "medusae-root"}
       style={style}
     >
-      <Canvas className="medusae-canvas" camera={{ position: [0, 0, 5] }}>
+      <Canvas
+        className="medusae-canvas"
+        frameloop={active ? "always" : "never"}
+        camera={{ position: [0, 0, 5] }}
+      >
         <Particles />
       </Canvas>
     </div>
