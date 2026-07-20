@@ -2,8 +2,6 @@ backend:
   name: git-gateway
   repo: BoloDB/bolodb-landing-page
   branch: main
-  identity_url: https://bolodb-cms-auth.netlify.app/.netlify/identity
-  gateway_url: https://bolodb-cms-auth.netlify.app/.netlify/git
 
 publish_mode: editorial_workflow
 
