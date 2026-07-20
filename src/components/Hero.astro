@@ -1,5 +1,6 @@
 ---
 import Medusae from '@/components/Medusae.tsx';
+import { WAITLIST_MODE } from '@/lib/site';
 ---
 
 <section
@@ -65,15 +66,13 @@ import Medusae from '@/components/Medusae.tsx';
   <!-- CTAs -->
   <div class="flex flex-wrap justify-center anim-rise-in anim-delay-5" style="gap:12px;">
     <a
-      href="https://app.bolodb.dev/signup"
-      data-signup-cta
-      data-waitlist-label="Join the waitlist"
+      href={WAITLIST_MODE ? '#waitlist' : 'https://app.bolodb.dev/signup'}
       class="inline-flex items-center rounded-lg font-semibold transition-all"
       style="gap:8px; background:var(--brand); color:var(--on-brand); font-size:15px; padding:14px 28px; letter-spacing:-0.01em; box-shadow:0 10px 32px -8px rgba(var(--glow-rgb),0.4);"
       onmouseover="this.style.background='var(--brand-2)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 18px 44px -10px rgba(var(--glow-rgb),0.5)'"
       onmouseout="this.style.background='var(--brand)'; this.style.transform='none'; this.style.boxShadow='0 10px 32px -8px rgba(var(--glow-rgb),0.4)'"
     >
-      Start for free
+      {WAITLIST_MODE ? 'Join the waitlist' : 'Start for free'}
     </a>
     <a
       href="#demo"

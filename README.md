@@ -51,21 +51,29 @@ While the platform is in private early access, the landing page collects waitlis
 signups. This is powered by [PostHog](https://posthog.com/) (no backend server —
 the site stays fully static):
 
+- **Waitlist mode** — while `WAITLIST_MODE` is on (the default, see
+  `src/lib/site.ts`), the app **Log in** and **Start free** entry points are not
+  rendered at all — every CTA routes to the on-page `#waitlist` form. This is
+  resolved at **build time**, so there's no client-side flicker and it doesn't
+  depend on PostHog being reachable. To reopen signup/login once the platform is
+  public, build with `PUBLIC_WAITLIST_MODE=off`.
 - **Storage** — a signup writes a person record (keyed by email) plus a
   `waitlist_signup` event, and enrolls the person in the **BoloDB Early Access**
   feature. Signups are visible under Persons and the Early Access feature in
-  PostHog.
-- **Feature flag** — `signup-login-waitlist` controls "waitlist mode". While it's
-  **on**, the site's signup CTAs ("Start free" / "Start for free") repoint to the
-  on-page `#waitlist` form. Turn the flag **off** in PostHog once the platform is
-  open and the CTAs revert to the app signup with no code change or redeploy.
+  PostHog. The `signup-login-waitlist` PostHog flag mirrors this state for
+  product/analytics use.
 - **Privacy** — PostHog is initialized with autocapture, pageviews, session
   recording and surveys disabled and in-memory persistence (no cookies). It only
-  fetches the flag and sends the one explicit event when someone joins, keeping
-  the site's "no telemetry" promise intact.
+  sends the one explicit event when someone joins, keeping the site's "no
+  telemetry" promise intact.
 
-Override the project via build-time env vars if needed:
-`PUBLIC_POSTHOG_KEY`, `PUBLIC_POSTHOG_HOST` (defaults target the current project).
+**Environment variables (build time):**
+
+| Variable | Purpose |
+| --- | --- |
+| `PUBLIC_SITE_ENV` | Set to `production` on the real deploy so the live PostHog key is used. Unset elsewhere, so previews/forks never write to the production project. |
+| `PUBLIC_WAITLIST_MODE` | `off` reopens app signup/login; anything else (default) keeps waitlist-only mode. |
+| `PUBLIC_POSTHOG_KEY` / `PUBLIC_POSTHOG_HOST` | Override the PostHog project explicitly in any build. |
 
 ## CMS Setup (Optional)
 

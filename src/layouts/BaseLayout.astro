@@ -215,28 +215,5 @@ const POSTHOG_UI_HOST = 'https://us.posthog.com';
     })();
     </script>
 
-    <!-- Waitlist mode: when the `signup-login-waitlist` flag is on, repoint the
-         signup CTAs to the on-page waitlist instead of the app. The waitlist
-         section itself is always visible, so this is pure progressive
-         enhancement — if PostHog is blocked, CTAs keep their default target. -->
-    <script is:inline>
-    (function () {
-      function enableWaitlistMode() {
-        document.documentElement.setAttribute('data-waitlist-mode', 'on');
-        document.querySelectorAll('[data-signup-cta]').forEach(function (el) {
-          el.setAttribute('href', '#waitlist');
-          el.textContent = el.getAttribute('data-waitlist-label') || 'Join the waitlist';
-        });
-      }
-      var ph = window.posthog;
-      if (ph && typeof ph.onFeatureFlags === 'function') {
-        ph.onFeatureFlags(function () {
-          try {
-            if (ph.isFeatureEnabled('signup-login-waitlist')) enableWaitlistMode();
-          } catch (e) {}
-        });
-      }
-    })();
-    </script>
   </body>
 </html>

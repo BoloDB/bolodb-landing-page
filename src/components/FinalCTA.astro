@@ -1,4 +1,5 @@
 ---
+import { WAITLIST_MODE } from '@/lib/site';
 ---
 
 <section class="relative z-[2] px-6 pb-[100px] pt-[60px]">
@@ -36,9 +37,7 @@
     </p>
     <div class="relative mt-8 flex flex-wrap justify-center" style="gap:12px;">
       <a
-        href="https://app.bolodb.dev/signup"
-        data-signup-cta
-        data-waitlist-label="Join the waitlist"
+        href={WAITLIST_MODE ? '#waitlist' : 'https://app.bolodb.dev/signup'}
         class="inline-flex items-center rounded-lg font-semibold transition-all"
         style={{
           background: 'var(--contrast-bg)',
@@ -50,7 +49,7 @@
         onmouseover="this.style.background='var(--brand)'; this.style.color='var(--on-brand)'; this.style.transform='translateY(-2px)'"
         onmouseout="this.style.background='var(--contrast-bg)'; this.style.color='var(--contrast-ink)'; this.style.transform='none'"
       >
-        Start for free
+        {WAITLIST_MODE ? 'Join the waitlist' : 'Start for free'}
       </a>
       <a
         href="#demo"
