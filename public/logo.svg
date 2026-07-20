@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 64" fill="none">
+  <!-- Icon -->
+  <g>
+    <path d="M14 7 L33 7 Q41 7 41 15 L41 26 Q41 34 33 34 L23 34 L15 43 L17 34 L14 34 Q6 34 6 26 L6 15 Q6 7 14 7 Z"
+      stroke="#4DA6FF" stroke-width="3.4" stroke-linejoin="round" fill="none"/>
+    <g>
+      <path d="M25.5 24 L25.5 48 A16.5 6 0 0 0 58.5 48 L58.5 24 Z" fill="#8A8F98"/>
+      <ellipse cx="42" cy="24" rx="16.5" ry="6" fill="#8A8F98"/>
+      <path d="M25.5 32 A16.5 6 0 0 0 58.5 32" fill="none" stroke="#FFFFFF" stroke-width="2.6"/>
+      <path d="M25.5 40 A16.5 6 0 0 0 58.5 40" fill="none" stroke="#FFFFFF" stroke-width="2.6"/>
+    </g>
+  </g>
+  <!-- Wordmark: "Bolo" in ink, "DB" in brand blue -->
+  <text x="74" y="42" font-family="Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+    font-size="34" font-weight="800" letter-spacing="-0.6" fill="#1F2937">Bolo<tspan fill="#4DA6FF">DB</tspan></text>
+</svg>

@@ -1,4 +1,5 @@
 ---
+import Logo from '@/components/Logo.astro';
 ---
 
 <footer
@@ -8,8 +9,9 @@
   <div class="mx-auto flex max-w-[1100px] flex-wrap justify-between" style="gap:32px; align-items:flex-start;">
     <!-- Brand -->
     <div class="flex flex-col" style="gap:10px;">
-      <span class="text-base font-bold tracking-[-0.02em]" style="color:var(--ink);">
-        Bolo<span style="color:var(--brand);">DB</span>
+      <span class="flex items-center gap-2 text-base font-bold tracking-[-0.02em]" style="color:var(--ink);">
+        <Logo size={22} />
+        <span>Bolo<span style="color:var(--brand);">DB</span></span>
       </span>
       <span class="text-[13px]" style="color:var(--faint);">Ask your data. Trust the answer.</span>
       <span

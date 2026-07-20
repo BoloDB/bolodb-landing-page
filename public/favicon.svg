@@ -1,4 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#18181b"/>
-  <text x="5" y="23" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="white">B</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0D0E12"/>
+  <g transform="translate(3.8 6) scale(0.88)">
+    <!-- Speech bubble -->
+    <path d="M14 7 L33 7 Q41 7 41 15 L41 26 Q41 34 33 34 L23 34 L15 43 L17 34 L14 34 Q6 34 6 26 L6 15 Q6 7 14 7 Z"
+      stroke="#4DA6FF" stroke-width="3.4" stroke-linejoin="round" fill="none"/>
+    <!-- Database cylinder -->
+    <g>
+      <path d="M25.5 24 L25.5 48 A16.5 6 0 0 0 58.5 48 L58.5 24 Z" fill="#8A8F98"/>
+      <ellipse cx="42" cy="24" rx="16.5" ry="6" fill="#8A8F98"/>
+      <path d="M25.5 32 A16.5 6 0 0 0 58.5 32" fill="none" stroke="#0D0E12" stroke-width="2.6"/>
+      <path d="M25.5 40 A16.5 6 0 0 0 58.5 40" fill="none" stroke="#0D0E12" stroke-width="2.6"/>
+    </g>
+  </g>
 </svg>
