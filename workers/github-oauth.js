@@ -49,7 +49,7 @@ async function getPrimaryEmail(token) {
 async function handleAuth(request, env) {
   const url = new URL(request.url);
   const origin = getOrigin(request, env);
-  const clientId = env.GITHUB_CLIENT_ID.trim();
+  const clientId = (env.GITHUB_CLIENT_ID || '').trim();
 
   if (!clientId) {
     return new Response('Missing GITHUB_CLIENT_ID', { status: 500 });
@@ -72,8 +72,8 @@ async function handleCallback(request, env) {
     return new Response('Missing code parameter', { status: 400 });
   }
 
-  const clientId = env.GITHUB_CLIENT_ID.trim();
-  const clientSecret = env.GITHUB_CLIENT_SECRET.trim();
+  const clientId = (env.GITHUB_CLIENT_ID || '').trim();
+  const clientSecret = (env.GITHUB_CLIENT_SECRET || '').trim();
 
   if (!clientId || !clientSecret) {
     return new Response('Missing environment variables', { status: 500 });
@@ -237,26 +237,30 @@ async function handleIdentity(request, env) {
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
+    try {
+      const url = new URL(request.url);
 
-    // Handle CORS preflight
-    if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        headers: corsHeaders(getOrigin(request, env)),
-      });
-    }
+      // Handle CORS preflight
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          headers: corsHeaders(getOrigin(request, env)),
+        });
+      }
 
-    // Route requests
-    switch (url.pathname) {
-      case '/auth':
-        return handleAuth(request, env);
-      case '/callback':
-        return handleCallback(request, env);
-      case '/.netlify/identity':
-      case '/identity':
-        return handleIdentity(request, env);
-      default:
-        return new Response('Not Found', { status: 404 });
+      // Route requests
+      switch (url.pathname) {
+        case '/auth':
+          return handleAuth(request, env);
+        case '/callback':
+          return handleCallback(request, env);
+        case '/.netlify/identity':
+        case '/identity':
+          return handleIdentity(request, env);
+        default:
+          return new Response('Not Found', { status: 404 });
+      }
+    } catch (err) {
+      return new Response(`Worker error: ${err.message}`, { status: 500 });
     }
   },
 };
