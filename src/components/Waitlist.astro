@@ -67,7 +67,7 @@ const perks = [
     <form
       id="waitlist-form"
       class="relative mx-auto mt-8 flex w-full max-w-[480px] flex-col items-stretch"
-      style="gap:15px;" 
+      style="gap:15px;"
       novalidate
       method="POST"
       action="https://script.google.com/macros/s/AKfycbwy8i0gQuTP4zl0l6bebkJ8kxsih7uIjVfze8pyDY5bIGdTZS5OJuRIOmzotEXxGtZQ/exec"
@@ -86,19 +86,19 @@ const perks = [
         onfocus="this.style.borderColor='var(--brand)'"
         onblur="this.style.borderColor='var(--border-2)'"
       />
-      
+
       <label for="waitlist-name" class="sr-only">Name</label>
-      <input 
-        name="Name" 
-        type="text" 
-        placeholder="Name" 
+      <input
+        name="Name"
+        type="text"
+        placeholder="Name"
         required
         class="w-full rounded-lg border px-4 text-[16px] outline-none transition-colors"
         style="height:50px; background:var(--glass); border-color:var(--border-2); color:var(--ink); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);"
         onfocus="this.style.borderColor='var(--brand)'"
         onblur="this.style.borderColor='var(--border-2)'"
       >
-      
+
       <button
         id="waitlist-submit"
         type="submit"
@@ -218,7 +218,7 @@ const perks = [
 
       // 3. Send data to Google Sheets
       var formData = new FormData(form);
-      
+
       fetch(form.action, {
         method: form.method,
         body: formData,
