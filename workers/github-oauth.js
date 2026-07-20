@@ -24,16 +24,16 @@ const corsHeaders = (origin) => ({
   'Access-Control-Allow-Credentials': 'true',
 });
 
-function getOrigin(request) {
-  const origins = (request.cf?.env?.ORIGINS || 'https://bolodb.dev').split(',').map(s => s.trim());
+function getOrigin(request, env) {
+  const origins = (env.ORIGINS || 'https://bolodb.dev').split(',').map(s => s.trim());
   const requestOrigin = request.headers.get('Origin') || '';
   return origins.includes(requestOrigin) ? requestOrigin : origins[0];
 }
 
-async function handleAuth(request) {
+async function handleAuth(request, env) {
   const url = new URL(request.url);
-  const origin = getOrigin(request);
-  const clientId = request.cf?.env?.GITHUB_CLIENT_ID;
+  const origin = getOrigin(request, env);
+  const clientId = env.GITHUB_CLIENT_ID;
 
   if (!clientId) {
     return new Response('Missing GITHUB_CLIENT_ID', { status: 500 });
@@ -47,17 +47,17 @@ async function handleAuth(request) {
   return Response.redirect(authUrl, 302);
 }
 
-async function handleCallback(request) {
+async function handleCallback(request, env) {
   const url = new URL(request.url);
-  const origin = getOrigin(request);
+  const origin = getOrigin(request, env);
   const code = url.searchParams.get('code');
 
   if (!code) {
     return new Response('Missing code parameter', { status: 400 });
   }
 
-  const clientId = request.cf?.env?.GITHUB_CLIENT_ID;
-  const clientSecret = request.cf?.env?.GITHUB_CLIENT_SECRET;
+  const clientId = env.GITHUB_CLIENT_ID;
+  const clientSecret = env.GITHUB_CLIENT_SECRET;
 
   if (!clientId || !clientSecret) {
     return new Response('Missing environment variables', { status: 500 });
@@ -133,8 +133,8 @@ async function handleCallback(request) {
   });
 }
 
-async function handleIdentity(request) {
-  const origin = getOrigin(request);
+async function handleIdentity(request, env) {
+  const origin = getOrigin(request, env);
 
   // Decap CMS sends auth headers to validate the user
   const authHeader = request.headers.get('Authorization');
@@ -192,19 +192,19 @@ export default {
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
-        headers: corsHeaders(getOrigin(request)),
+        headers: corsHeaders(getOrigin(request, env)),
       });
     }
 
     // Route requests
     switch (url.pathname) {
       case '/auth':
-        return handleAuth(request);
+        return handleAuth(request, env);
       case '/callback':
-        return handleCallback(request);
+        return handleCallback(request, env);
       case '/.netlify/identity':
       case '/identity':
-        return handleIdentity(request);
+        return handleIdentity(request, env);
       default:
         return new Response('Not Found', { status: 404 });
     }

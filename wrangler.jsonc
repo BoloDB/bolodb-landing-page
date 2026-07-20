@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bolodb-cms-auth",
+  "main": "workers/github-oauth.js",
+  "compatibility_date": "2026-07-20",
+  "vars": {
+    "ORIGINS": "https://bolodb.dev"
+  }
+}
