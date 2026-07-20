@@ -16,6 +16,7 @@
 const GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';
 const GITHUB_USER_URL = 'https://api.github.com/user';
+const GITHUB_EMAILS_URL = 'https://api.github.com/user/emails';
 
 const corsHeaders = (origin) => ({
   'Access-Control-Allow-Origin': origin,
@@ -30,6 +31,21 @@ function getOrigin(request, env) {
   return origins.includes(requestOrigin) ? requestOrigin : origins[0];
 }
 
+function isAllowedEmail(env, email) {
+  if (!env.ALLOWED_EMAILS) return false;
+  return env.ALLOWED_EMAILS.split(',').map(s => s.trim()).includes(email);
+}
+
+async function getPrimaryEmail(token) {
+  const res = await fetch(GITHUB_EMAILS_URL, {
+    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
+  });
+  if (!res.ok) return null;
+  const emails = await res.json();
+  const primary = emails.find(e => e.primary && e.verified);
+  return primary ? primary.email : null;
+}
+
 async function handleAuth(request, env) {
   const url = new URL(request.url);
   const origin = getOrigin(request, env);
@@ -40,7 +56,7 @@ async function handleAuth(request, env) {
   }
 
   const redirectUrl = `${url.origin}/callback`;
-  const scope = 'read:user repo';
+  const scope = 'read:user user:email repo';
 
   const authUrl = `${GITHUB_AUTHORIZE_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent(scope)}`;
 
@@ -93,6 +109,27 @@ async function handleCallback(request, env) {
 
   const userData = await userResponse.json();
 
+  // Check if user's email is allowed
+  const primaryEmail = await getPrimaryEmail(tokenData.access_token);
+  if (!primaryEmail || !isAllowedEmail(env, primaryEmail)) {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head><title>Access Denied</title></head>
+        <body>
+          <h1>Access Denied</h1>
+          <p>Your email (${primaryEmail || 'unknown'}) is not authorized to access this CMS.</p>
+          <script>
+            window.opener.postMessage("authorization:github:error:Access denied", "*");
+          </script>
+        </body>
+      </html>
+    `;
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html', ...corsHeaders(origin) },
+    });
+  }
+
   // Return the token in the format Decap CMS expects
   const html = `
     <!DOCTYPE html>
@@ -111,7 +148,7 @@ async function handleCallback(request, env) {
                   user: {
                     login: userData.login,
                     name: userData.name || userData.login,
-                    email: userData.email || '',
+                    email: primaryEmail,
                   },
                 })}',
                 e.origin
@@ -171,11 +208,22 @@ async function handleIdentity(request, env) {
 
   const userData = await userResponse.json();
 
+  const primaryEmail = await getPrimaryEmail(token);
+  if (!primaryEmail || !isAllowedEmail(env, primaryEmail)) {
+    return new Response(JSON.stringify({ error: 'Email not authorized' }), {
+      status: 403,
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders(origin),
+      },
+    });
+  }
+
   return new Response(JSON.stringify({
     metadata: {
       login: userData.login,
       name: userData.name || userData.login,
-      email: userData.email || '',
+      email: primaryEmail,
     },
   }), {
     headers: {
