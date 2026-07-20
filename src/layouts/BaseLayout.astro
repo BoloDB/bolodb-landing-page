@@ -16,6 +16,22 @@ const {
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev';
+
+// PostHog powers the early-access waitlist: it holds the `signup-login-waitlist`
+// feature flag and stores waitlist signups as person records. The project key is
+// a public, write-only client key, safe to ship.
+//
+// The hardcoded production key is only used on the real production deploy, which
+// sets PUBLIC_SITE_ENV=production (see .github/workflows/deploy-gh-pages.yml).
+// Local dev, Cloudflare/PR previews, and fork builds otherwise fall back to an
+// empty key, so PostHog never loads and they can't submit waitlist data to the
+// production project. Any build can still opt in explicitly via PUBLIC_POSTHOG_KEY.
+const IS_PRODUCTION = import.meta.env.PUBLIC_SITE_ENV === 'production';
+const POSTHOG_KEY =
+  import.meta.env.PUBLIC_POSTHOG_KEY ??
+  (IS_PRODUCTION ? 'phc_BFHACdCjB5i85zXxpQi5fF2NFhCHGHBHvjsuv2uW3VhB' : '');
+const POSTHOG_HOST = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
+const POSTHOG_UI_HOST = 'https://us.posthog.com';
 ---
 
 <!doctype html>
@@ -115,6 +131,29 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
         APIUrl: "https://bolodb-cms-auth.netlify.app/.netlify/identity"
       });
     </script>
+
+    <!--
+      PostHog — early-access waitlist only. Configured deliberately quiet so it
+      honours the site's "NO TELEMETRY" promise: no autocapture, no pageviews,
+      no session recording, no surveys, and in-memory persistence (no cookies).
+      It fetches feature flags and sends a single event when someone explicitly
+      joins the waitlist — nothing else.
+    -->
+    {POSTHOG_KEY && (
+      <script define:vars={{ POSTHOG_KEY, POSTHOG_HOST, POSTHOG_UI_HOST }}>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        window.posthog.init(POSTHOG_KEY, {
+          api_host: POSTHOG_HOST,
+          ui_host: POSTHOG_UI_HOST,
+          autocapture: false,
+          capture_pageview: false,
+          capture_pageleave: false,
+          disable_session_recording: true,
+          disable_surveys: true,
+          persistence: 'memory',
+        });
+      </script>
+    )}
   </head>
   <body>
     <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.03; background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); background-size:200px 200px"></div>
@@ -175,5 +214,6 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
       });
     })();
     </script>
+
   </body>
 </html>
