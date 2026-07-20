@@ -80,20 +80,23 @@ async function handleCallback(request, env) {
   }
 
   // Exchange code for access token
-  const body = new URLSearchParams({
-    client_id: clientId,
-    client_secret: clientSecret,
-    code: code,
-  });
-
   const tokenResponse = await fetch(GITHUB_TOKEN_URL, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: body.toString(),
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code: code,
+    }),
   });
+
+  if (!tokenResponse.ok) {
+    const text = await tokenResponse.text();
+    return new Response(`GitHub token error (${tokenResponse.status}): ${text.substring(0, 300)}`, { status: 502 });
+  }
 
   const tokenData = await tokenResponse.json();
 
