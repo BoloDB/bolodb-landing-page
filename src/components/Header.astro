@@ -1,5 +1,6 @@
 ---
 const navItems = [
+  { label: 'Waitlist', href: '/#waitlist' },
   { label: 'Demo', href: '/#demo' },
   { label: 'Features', href: '/#features' },
   { label: 'Connect', href: '/#connect' },
@@ -67,6 +68,8 @@ const APP_URL = 'https://app.bolodb.dev';
       </a>
       <a
         href="https://app.bolodb.dev"
+        data-signup-cta
+        data-waitlist-label="Join waitlist"
         class="inline-flex items-center rounded-md px-4 py-2 text-[13px] font-semibold transition-all"
         style="background:var(--contrast-bg); color:var(--contrast-ink); letter-spacing:-0.01em;"
         onmouseover="this.style.background='var(--brand)'; this.style.color='var(--on-brand)'; this.style.transform='translateY(-1px)'"
@@ -88,7 +91,7 @@ const APP_URL = 'https://app.bolodb.dev';
         ))
       }
       <a href={APP_URL} class="site-nav__mobile-link" data-nav-close>Log in</a>
-      <a href={APP_URL} class="site-nav__mobile-cta" data-nav-close>Start free</a>
+      <a href={APP_URL} class="site-nav__mobile-cta" data-nav-close data-signup-cta data-waitlist-label="Join the waitlist">Start free</a>
     </nav>
   </div>
 </header>
