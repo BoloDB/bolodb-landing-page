@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://bolodb.pages.dev',
+  site: 'https://bolodb.dev',
   integrations: [react(), tailwind(), sitemap()],
   markdown: {
     shikiConfig: {
