@@ -72,31 +72,33 @@ async function handleCallback(request, env) {
     return new Response('Missing code parameter', { status: 400 });
   }
 
-  const clientId = env.GITHUB_CLIENT_ID;
-  const clientSecret = env.GITHUB_CLIENT_SECRET;
+  const clientId = env.GITHUB_CLIENT_ID.trim();
+  const clientSecret = env.GITHUB_CLIENT_SECRET.trim();
 
   if (!clientId || !clientSecret) {
     return new Response('Missing environment variables', { status: 500 });
   }
 
   // Exchange code for access token
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    code: code,
+  });
+
   const tokenResponse = await fetch(GITHUB_TOKEN_URL, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json',
     },
-    body: JSON.stringify({
-      client_id: clientId,
-      client_secret: clientSecret,
-      code: code,
-    }),
+    body: body.toString(),
   });
 
   const tokenData = await tokenResponse.json();
 
   if (tokenData.error) {
-    return new Response(`GitHub OAuth error: ${tokenData.error_description}`, { status: 401 });
+    return new Response(`GitHub OAuth error: ${JSON.stringify(tokenData)}`, { status: 401 });
   }
 
   // Get user info
