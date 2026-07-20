@@ -49,16 +49,16 @@ async function getPrimaryEmail(token) {
 async function handleAuth(request, env) {
   const url = new URL(request.url);
   const origin = getOrigin(request, env);
-  const clientId = env.GITHUB_CLIENT_ID;
+  const clientId = env.GITHUB_CLIENT_ID.trim();
 
   if (!clientId) {
     return new Response('Missing GITHUB_CLIENT_ID', { status: 500 });
   }
 
   const redirectUrl = `${url.origin}/callback`;
-  const scope = 'read:user user:email repo';
+  const scope = 'read:user+user:email+repo';
 
-  const authUrl = `${GITHUB_AUTHORIZE_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent(scope)}`;
+  const authUrl = `${GITHUB_AUTHORIZE_URL}?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${scope}`;
 
   return Response.redirect(authUrl, 302);
 }
