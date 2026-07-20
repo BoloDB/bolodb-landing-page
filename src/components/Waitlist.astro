@@ -63,11 +63,14 @@ const perks = [
     </p>
 
     <!-- Signup form -->
+    <!-- Signup form -->
     <form
       id="waitlist-form"
-      class="relative mx-auto mt-8 flex w-full max-w-[480px] flex-col items-stretch sm:flex-row"
-      style="gap:10px;"
+      class="relative mx-auto mt-8 flex w-full max-w-[480px] flex-col items-stretch"
+      style="gap:15px;" 
       novalidate
+      method="POST"
+      action="https://script.google.com/macros/s/AKfycbwy8i0gQuTP4zl0l6bebkJ8kxsih7uIjVfze8pyDY5bIGdTZS5OJuRIOmzotEXxGtZQ/exec"
     >
       <label for="waitlist-email" class="sr-only">Email address</label>
       <input
@@ -78,16 +81,29 @@ const perks = [
         autocomplete="email"
         required
         placeholder="you@company.com"
-        class="min-w-0 flex-1 rounded-lg border px-4 text-[15px] outline-none transition-colors"
+        class="w-full rounded-lg border px-4 text-[16px] outline-none transition-colors"
         style="height:50px; background:var(--glass); border-color:var(--border-2); color:var(--ink); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);"
         onfocus="this.style.borderColor='var(--brand)'"
         onblur="this.style.borderColor='var(--border-2)'"
       />
+      
+      <label for="waitlist-name" class="sr-only">Name</label>
+      <input 
+        name="Name" 
+        type="text" 
+        placeholder="Name" 
+        required
+        class="w-full rounded-lg border px-4 text-[16px] outline-none transition-colors"
+        style="height:50px; background:var(--glass); border-color:var(--border-2); color:var(--ink); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);"
+        onfocus="this.style.borderColor='var(--brand)'"
+        onblur="this.style.borderColor='var(--border-2)'"
+      >
+      
       <button
         id="waitlist-submit"
         type="submit"
-        class="inline-flex items-center justify-center whitespace-nowrap rounded-lg font-semibold transition-all"
-        style="height:50px; padding:0 26px; background:var(--brand); color:var(--on-brand); font-size:15px; letter-spacing:-0.01em; box-shadow:0 10px 32px -8px rgba(var(--glow-rgb),0.4);"
+        class="w-full inline-flex items-center justify-center whitespace-nowrap rounded-lg font-semibold transition-all"
+        style="height:60px; background:var(--brand); color:var(--on-brand); font-size:16px; letter-spacing:-0.01em; box-shadow:0 10px 32px -8px rgba(var(--glow-rgb),0.4);"
         onmouseover="this.style.background='var(--brand-2)'; this.style.transform='translateY(-1px)'"
         onmouseout="this.style.background='var(--brand)'; this.style.transform='none'"
       >
@@ -137,12 +153,12 @@ const perks = [
     border: 0;
   }
 </style>
-
 <script is:inline>
   (function () {
     var form = document.getElementById('waitlist-form');
     if (!form) return;
     var input = document.getElementById('waitlist-email');
+    var nameInput = document.querySelector('input[name="Name"]'); // Grab the name input too
     var button = document.getElementById('waitlist-submit');
     var message = document.getElementById('waitlist-message');
     var submitted = false;
@@ -157,7 +173,7 @@ const perks = [
     }
 
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
+      e.preventDefault(); // Stops the ugly redirect
       if (submitted) return;
 
       var email = (input && input.value ? input.value : '').trim().toLowerCase();
@@ -167,8 +183,7 @@ const perks = [
         return;
       }
 
-      // Persist the signup to PostHog: a person record keyed by email, an explicit
-      // event, and enrollment in the BoloDB Early Access waitlist.
+      // 1. PostHog Tracking (Your existing code)
       try {
         var ph = window.posthog;
         if (ph && typeof ph.capture === 'function') {
@@ -196,18 +211,45 @@ const perks = [
         }
       } catch (err) {}
 
-      submitted = true;
-      if (input) {
-        input.readOnly = true;
-        input.style.opacity = '0.6';
-      }
+      // 2. Change button text to show loading
       if (button) {
-        button.disabled = true;
-        button.textContent = "You're in ✓";
-        button.style.background = 'var(--accent)';
-        button.style.cursor = 'default';
+        button.textContent = "Joining...";
       }
-      setMessage("You're on the list! We'll email " + email + ' the moment your spot opens.', 'success');
+
+      // 3. Send data to Google Sheets
+      var formData = new FormData(form);
+      
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+      })
+      .then(function(response) {
+        // Success! Update the UI
+        submitted = true;
+        if (input) {
+          input.readOnly = true;
+          input.style.opacity = '0.6';
+        }
+        if (nameInput) {
+          nameInput.readOnly = true;
+          nameInput.style.opacity = '0.6';
+        }
+        if (button) {
+          button.disabled = true;
+          button.textContent = "You're in ✓";
+          button.style.background = 'var(--accent)';
+          button.style.cursor = 'default';
+        }
+        setMessage("You're on the list! We'll email " + email + ' the moment your spot opens.', 'success');
+      })
+      .catch(function(error) {
+        // Error handling
+        console.error('Error!', error.message);
+        setMessage("Oops, something went wrong. Please try again.", "error");
+        if (button) {
+          button.textContent = "Join the waitlist"; // Reset button so they can try again
+        }
+      });
     });
   })();
 </script>
