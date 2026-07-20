@@ -37,6 +37,11 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        env:
+          # Marks this as the production deploy so the live waitlist key is used.
+          # Non-production builds (dev, previews, forks) leave this unset and
+          # therefore do not send waitlist data to the production PostHog project.
+          PUBLIC_SITE_ENV: production
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

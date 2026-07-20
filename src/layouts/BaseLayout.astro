@@ -19,9 +19,17 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://bolodb.dev
 
 // PostHog powers the early-access waitlist: it holds the `signup-login-waitlist`
 // feature flag and stores waitlist signups as person records. The project key is
-// a public, write-only client key, safe to ship. Override at build time with the
-// PUBLIC_POSTHOG_* env vars if the project ever moves.
-const POSTHOG_KEY = import.meta.env.PUBLIC_POSTHOG_KEY ?? 'phc_BFHACdCjB5i85zXxpQi5fF2NFhCHGHBHvjsuv2uW3VhB';
+// a public, write-only client key, safe to ship.
+//
+// The hardcoded production key is only used on the real production deploy, which
+// sets PUBLIC_SITE_ENV=production (see .github/workflows/deploy-gh-pages.yml).
+// Local dev, Cloudflare/PR previews, and fork builds otherwise fall back to an
+// empty key, so PostHog never loads and they can't submit waitlist data to the
+// production project. Any build can still opt in explicitly via PUBLIC_POSTHOG_KEY.
+const IS_PRODUCTION = import.meta.env.PUBLIC_SITE_ENV === 'production';
+const POSTHOG_KEY =
+  import.meta.env.PUBLIC_POSTHOG_KEY ??
+  (IS_PRODUCTION ? 'phc_BFHACdCjB5i85zXxpQi5fF2NFhCHGHBHvjsuv2uW3VhB' : '');
 const POSTHOG_HOST = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
 const POSTHOG_UI_HOST = 'https://us.posthog.com';
 ---
