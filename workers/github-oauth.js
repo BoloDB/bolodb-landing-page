@@ -93,12 +93,14 @@ async function handleCallback(request, env) {
     }),
   });
 
-  if (!tokenResponse.ok) {
-    const text = await tokenResponse.text();
-    return new Response(`GitHub token error (${tokenResponse.status}): ${text.substring(0, 300)}`, { status: 502 });
-  }
+  const text = await tokenResponse.text();
 
-  const tokenData = await tokenResponse.json();
+  let tokenData;
+  try {
+    tokenData = JSON.parse(text);
+  } catch {
+    return new Response(`GitHub token response (${tokenResponse.status}): ${text.substring(0, 300)}`, { status: 502 });
+  }
 
   if (tokenData.error) {
     return new Response(`GitHub OAuth error: ${JSON.stringify(tokenData)}`, { status: 401 });
